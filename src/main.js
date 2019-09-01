@@ -1,6 +1,7 @@
 
   hand = null;
   boxs = [];
+  in_hand = null;
   function createText(type, text, position = null, rotation = null, scale = null) {
     object = document.createElement(type);
     object.setAttribute('text', text);
@@ -22,6 +23,17 @@
     return object;
   }
 
+  function createAnimation(attribute, to, easing, delay, direction, dur,repeat){
+    animation = document.createElement('a-animation');
+    animation.setAttribute('attribute',attribute);
+    animation.setAttribute('to',to);
+    animation.setAttribute('easing',easing);
+    animation.setAttribute('delay',delay);
+    animation.setAttribute('direction',direction);
+    animation.setAttribute('dur',dur);
+    animation.setAttribute('repeat',repeat);
+    return animation;
+  }
 
   function initCartons() {
     AFRAME.registerComponent('cartons', {
@@ -83,16 +95,76 @@
             text = randLetter();
             numb = Math.random().toString().slice(2, 5);
             key = text + numb;
-            boxs.push(key);
+            eb.id = key;
             rh = (2 + Math.floor(Math.random() * 6.5) + 1) * 0.1;
+            rw = (2.9 + Math.floor(Math.random() * 6.5) + 1) * 0.1;
+            let color = randArray(["#EDD19F","brown","orange"])
+            eb.setAttribute('data-text',text);
+            eb.setAttribute('data-numb',numb);
+            eb.setAttribute('data-height',rh);
+            eb.setAttribute('data-width',0.8);
+            eb.setAttribute('data-depth',rw);
+            eb.setAttribute('data-color',color);
+            boxs.push(key);
             eb.setAttribute('position', '0 ' + ((rh / 2) + 0.05) + ' ' + m);
             eb.addEventListener('click', function (evt) {
+              if(in_hand != null){
+                if(this.id == in_hand){
+                  this.childNodes[0].setAttribute('opacity','1')
+                  this.childNodes[0].childNodes[0].setAttribute('visible','true')
+                  hb.setAttribute("visible","false");
+                  in_hand = null;
+                }
+                else {
+                  playError();
+                }
+              }
+              else 
+              {
+                in_hand = this.id;
               console.log("this", this);
-              this.setAttribute('material', 'color', 'blue');
+              this.childNodes[0].setAttribute('opacity','0.3')
+              this.childNodes[0].childNodes[0].setAttribute('visible','false')
+              // this.setAttribute('material', 'color', 'blue');
+              hl = document.getElementById('hl');
+              hr = document.getElementById('hr');
+              hb = document.getElementById('hb');
+              hbc = document.getElementById('hbc');
+              hbt1 = document.getElementById('hbt1');
+              hbt2 = document.getElementById('hbt2');
+              hb.setAttribute("visible","true");
+              hbc.setAttribute("depth",0.790);
+              //depth = largeur
+              //width = depth
+              //height = height
+              console.log("this.getAttribute('data-depth')",this.getAttribute('data-depth'));
+              hrl = '-20 0 0';
+              hrr = '-20 0 0';
+              if(this.getAttribute('data-depth') < 0.5){
+                hrl = '-20 -15 0';
+                hrr = '-20 15 0';
+              }
+              else if(this.getAttribute('data-depth') < 0.7){
+                hrl = '-20 -8 0';
+                hrr = '-20 8 0';
+              }
+              else if(this.getAttribute('data-depth') > 0.95){
+                hrl = '-20 3 0';
+                hrr = '-20 -3 0';
+              }
+              hl.setAttribute('rotation',hrl);
+              hr.setAttribute('rotation',hrr);
+              hbc.setAttribute("height",this.getAttribute('data-depth')); // LARGEUR
+              hbc.setAttribute("width",this.getAttribute('data-width')); // DEPTH
+              hbc.setAttribute("depth",this.getAttribute('data-height')); // HAUTEUR
+              hbc.setAttribute("color",this.getAttribute('data-color'));
+              hbt1.setAttribute("text","anchor:align;width:3.3;color:white;value:" + this.getAttribute('data-text') + ";align:center;shader:sdf");
+              hbt2.setAttribute("text","anchor:align;width:3.3;color:white;value:" + this.getAttribute('data-numb') + ";align:center;shader:sdf");
               console.log('I was clicked at: ', evt.detail.intersection.point);
+
+                
+              }
             });
-            let color = randArray(["#EDD19F","brown","orange"])
-            rw = (2.9 + Math.floor(Math.random() * 6.5) + 1) * 0.1;
             b = createObject("a-box", 0.8, rh, rw, "0 0 0", "0 0 0", null, color);
             b2 = createObject("a-box", 0.03, 0.3, 0.4, "0.4 0 0", "0 0 0", null, "black");
             t2 = createText("a-text", "anchor:align;width:3.3;color:white;value:" + text + ";align:center;shader:sdf", "0.02 0.06 0", "0 90 0", "1 1 1");
@@ -108,6 +180,10 @@
 
 
         this.el.appendChild(e);
+      }
+
+      function playError(){
+
       }
       //   <a-box position="-3 1 -3" material="color:#EDD19F" geometry="width:0.7" rotation="">
       // <a-text text="anchor:align;width:5;color:#393939;value:RGB;align:center;shader:sdf" rotation="0 0 0" position="0 0 0">C32</a-text>
@@ -172,6 +248,47 @@
 
 
 
+  AFRAME.registerComponent('dock-listener', {
+    init: function () {
+      this.el.addEventListener('click', function (evt) {
+        console.log("dock-lsitener this",this.id);
+        console.log('I was clicked at: ', evt.detail.intersection.point);
+        country = this.id;
+        if(in_hand != null){
+          box_id = in_hand;
+          box_e = document.getElementById(box_id);
+          hb = document.getElementById('hb');
+          hbct = document.getElementById('hb_' + country);
+          posy = 1.255 + (box_e.getAttribute('data-height')/2)
+          hbct.setAttribute('position','0 ' + posy + ' -0.5');
+          hbct.setAttribute('visible','true');
+          hbct.setAttribute('animation','property: position; to: 0 ' + posy + ' -1.5; dur: 2000');
+          setTimeout(() => {
+          hbct.setAttribute('visible','false');
+          },2000)
+
+          // animation = createAnimation('position','0 ' + posy + ' -0.5','ease',0,'normal',2000,0);
+
+          // hbct.appendChild(animation);
+          // box_e.childNodes[0].setAttribute('opacity','1')
+          box_e.childNodes[0].setAttribute('visible','false')
+          hb.setAttribute("visible","false");
+
+          hbc = document.getElementById('hbc_' + country);
+          hbt1 = document.getElementById('hbt1_' + country);
+          hbt2 = document.getElementById('hbt2_' + country);
+          hbc.setAttribute("height",box_e.getAttribute('data-depth')); // LARGEUR
+          hbc.setAttribute("width",box_e.getAttribute('data-width')); // DEPTH
+          hbc.setAttribute("depth",box_e.getAttribute('data-height')); // HAUTEUR
+          hbc.setAttribute("color",box_e.getAttribute('data-color'));
+          hbt1.setAttribute("text","anchor:align;width:3.3;color:white;value:" + box_e.getAttribute('data-text') + ";align:center;shader:sdf");
+          hbt2.setAttribute("text","anchor:align;width:3.3;color:white;value:" + box_e.getAttribute('data-numb') + ";align:center;shader:sdf");
+          
+          in_hand = null;
+        }
+      });
+    }
+  });
   AFRAME.registerComponent('cursor-listener', {
     init: function () {
       var COLORS = ['red', 'green', 'blue', 'purple', 'pink', 'gray', 'brown'];
@@ -213,7 +330,13 @@
 
   // setTimeout(() => {
   console.log("start init");
-      //   initCartons();
-      // initEtagere();
-      // initEtageres();
-      // },1000);
+
+  // TODO
+  // -- START SCREEN
+  // -- ORDER INTERFACE
+  // -- INSTRUCTIONS
+  // -- COUNTDOWN
+  // -- GENERATE ORDER
+  // -- TIMER
+  // -- SOUNDS
+  // -- RECORDS
