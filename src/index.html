@@ -190,7 +190,7 @@
       <a-entity light="type: directional; color: #FFF; intensity: 0.8" position="0 6 1"></a-entity>
     </a-entity>
     <!-- MENU -->
-    <a-entity id="menu" visible="true" position="0 1.7 0.6">
+    <a-entity id="menu" visible="true" position="0 1.75 0.5" rotation="-1.75 0 0">
       <a-entity id="menu_home">
         <a-box color="gray" position="0 0 0" width="1.55" height="0.95" depth="0.01" opacity="0.7">
           <a-text position="0 0.35 0.03" text="anchor:align;width:2.5;color:white;value:MENU;align:center;shader:sdf">
@@ -199,14 +199,15 @@
         <a-box color="black" position="0 0.1 0.01" width="0.84" height="0.25" depth="0.01" id="play" opacity="0.8"
           play-listener>
           <a-box color="orange" position="0 0 0.011" width="0.78" height="0.21" depth="0.01" opacity="0.8">
-            <a-text position="0 0 0.012" text="anchor:align;width:2.1;color:white;value:Play;align:center;shader:sdf">
+            <a-text position="0 0.01 0.012"
+              text="anchor:align;width:2.1;color:white;value:Play;align:center;shader:sdf">
             </a-text>
           </a-box>
         </a-box>
-        <a-box instructions-listener color="black" position="0 -0.2 0.01" width="0.84" height="0.25" depth="0.01"
+        <a-box back-listener color="black" position="0 -0.2 0.01" width="0.84" height="0.25" depth="0.01"
           id="instructions" opacity="0.8">
           <a-box color="orange" position="0 0 0.02" width="0.78" height="0.21" depth="0.01" opacity="0.8">
-            <a-text position="0 0 0.03"
+            <a-text position="0 0.02 0.03"
               text="anchor:align;width:2.1;color:white;value:Instructions;align:center;shader:sdf">
             </a-text>
           </a-box>
@@ -223,17 +224,19 @@
           </a-text>
         </a-box>
         <a-text position="-0.7 0.2 0.01"
-          text="anchor:align;lineHeight: 40; wrapCount: 30; width:1.3;color:white;value:1. Look order code & country destination;align:left;shader:sdf">
+          text="anchor:align;lineHeight: 40; wrapCount: 30; width:1.3;color:white;value:1. Look order code & country;align:left;shader:sdf">
         </a-text>
-        <a-text position="-0.7 0.05 0.01"
+        <a-text position="-0.7 0.1 0.01"
           text="anchor:align;lineHeight: 40; wrapCount: 30; width:1.3;color:white;value:2. Find parcel with code;align:left;shader:sdf">
         </a-text>
-        <a-text position="-0.7 -0.1 0.01" width="0.9"
+        <a-text position="-0.7 -0.05 0.01" width="0.9"
           text="anchor:align;lineHeight: 40; wrapCount: 30; width:1.3;color:white;value:3. Grap parcel & send them to correct destination;align:left;shader:sdf">
         </a-text>
-        <a-box back-listener color="black" position="0 -0.3 0.01" width="0.84" height="0.25" depth="0.01" opacity="0.8">
-          <a-box color="orange" position="0 0 0.02" width="0.78" height="0.21" depth="0.01" opacity="0.8">
-            <a-text position="0 0 0.03" text="anchor:align;width:2.1;color:white;value:<- Back;align:center;shader:sdf">
+        <a-box back-listener color="black" position="0 -0.28 0.01" width="0.84" height="0.25" depth="0.01"
+          opacity="0.8">
+          <a-box  color="orange" position="0 0 0.02" width="0.78" height="0.21" depth="0.01" opacity="0.8">
+            <a-text position="0 0.02 0.03"
+              text="anchor:align;width:2.1;color:white;value:<- Back;align:center;shader:sdf">
             </a-text>
           </a-box>
         </a-box>
@@ -250,9 +253,28 @@
       <a-camera wasd-controls="acceleration: 180" wasd-controls-enabled="false">
         <a-cursor color="white" intersection-spawn="event: click; mixin: voxel">
           <a-entity id="view">
-            <a-entity id="view_orders" position="0 0.7 0" visible="false">
-              <a-text text="anchor:align;width:1.6;color:white;value:Orders;align:center;shader:sdf"></a-text>
-              <a-box position="0.2 -0.1 0" width="0.4" height="0.15" depth="0.01" color="black" id="order_1"></a-box>
+            <a-entity id="view_orders" position="0 0.76 0" rotation="10 0 0" visible="true">
+              <a-box position="0 0 0" width="0.44" height="0.15" depth="0.01" color="darkgray">
+                <a-box position="0 0 0.002" width="0.4" height="0.13" depth="0.01" color="gray">
+                  <a-text position="0 0 0.008"
+                    text="anchor:align;width:1.4;color:white;value:ORDERS;align:center;shader:sdf"></a-text>
+                </a-box>
+              </a-box>
+              <a-entity id="order_1" position="0 -0.152 0" visible="false">
+                <a-box width="0.2" height="0.150" depth="0.01" position="0 0 0"
+                  scale="" color="black" material="" opacity="1">
+                  <a-text text="anchor:align;width:1.2;color:white;value:RGB;align:center;shader:sdf"
+                    position="0 0.01 0.068" rotation="0 0 0" scale="1 1 1"></a-text>
+                  <a-text text="anchor:align;width:1.2;color:white;value:123;align:center;shader:sdf"
+                    position="0 -0.05 0.068" rotation="0 0 0" scale="1 1 1"></a-text>
+                </a-box>
+                <a-box position="0 -0.12 0" width="0.44" height="0.09" depth="0.01" color="darkred">
+                  <a-box position="0 -0.001 0.002" width="0.4" height="0.06" depth="0.01" color="red">
+                    <a-text position="0 0.003 0.008"
+                      text="anchor:align;width:1.1;color:white;value:Germany;align:center;shader:sdf"></a-text>
+                  </a-box>
+                </a-box>
+              </a-entity>
               <!-- <a-box id="order_2"></a-box>
               <a-box id="order_3"></a-box> -->
             </a-entity>

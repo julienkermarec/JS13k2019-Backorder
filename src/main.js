@@ -2,6 +2,105 @@
 hand = null;
 boxs = [];
 in_hand = null;
+
+airports = {
+  france:
+    [
+      { code: 'CDG', title: 'Charles de Gaulle International Airport', city: 'Paris' },
+      { code: 'NCE', title: 'Nice-Côte d\'Azur Airport', city: 'Nice' },
+      { code: 'LYS', title: 'Lyon Saint-Exupéry Airport', city: 'Lyon' },
+      { code: 'MRS', title: 'Marseille Provence Airport', city: 'Marseille' },
+      { code: 'TLS', title: 'Toulouse-Blagnac Airport', city: 'Toulouse/Blagnac' },
+      { code: 'ORY', title: 'Paris-Orly Airport', city: 'Paris' },
+      { code: 'BSL', title: 'EuroAirport Basel-Mulhouse-Freiburg Airport', city: 'Bâle/Mulhouse' },
+      { code: 'BOD', title: 'Bordeaux-Mérignac Airport', city: 'Bordeaux/Mérignac' },
+      { code: 'NTE', title: 'Nantes Atlantique Airport', city: 'Nantes' },
+      { code: 'SXB', title: 'Strasbourg Airport', city: 'Strasbourg' },
+      { code: 'LIL', title: 'Lille-Lesquin Airport', city: 'Lille/Lesquin' },
+      { code: 'AJA', title: 'Ajaccio-Napoléon Bonaparte Airport', city: 'Ajaccio/Napoléon Bonaparte' },
+      { code: 'BES', title: 'Brest Bretagne Airport', city: 'Brest/Guipavas' },
+      { code: 'BIA', title: 'Bastia-Poretta Airport', city: 'Bastia/Poretta' },
+      { code: 'MPL', title: 'Montpellier-Méditerranée Airport', city: 'Montpellier/Méditerranée' },
+      { code: 'CLY', title: 'Calvi-Sainte-Catherine Airport', city: 'Calvi/Sainte-Catherine' },
+      { code: 'FSC', title: 'Figari Sud-Corse Airport', city: 'Figari Sud-Corse' },
+      { code: 'RNS', title: 'Rennes-Saint-Jacques Airport', city: 'Rennes/Saint-Jacques' },
+      { code: 'BIQ', title: 'Biarritz-Anglet-Bayonne Airport', city: 'Biarritz/Anglet/Bayonne' },
+      { code: 'EGC', title: 'Bergerac-Roumanière Airport', city: 'Bergerac/Roumanière' },
+      { code: 'LIG', title: 'Limoges Airport', city: 'Limoges/Bellegarde' },
+      { code: 'CFE', title: 'Clermont-Ferrand Auvergne Airport', city: 'Clermont-Ferrand/Auvergne' },
+      { code: 'LRH', title: 'La Rochelle-Ile de Ré Airport', city: 'La Rochelle/Ile de Re' },
+      { code: 'PUF', title: 'Pau Pyrénées Airport', city: 'Pau/Pyrénées (Uzein)' },
+      { code: 'LDE', title: 'Tarbes-Lourdes-Pyrénées Airport', city: 'Tarbes/Lourdes/Pyrénées' },
+      { code: 'BVE', title: 'Brive Souillac Airport', city: 'Brive' },
+      { code: 'EBU', title: 'Saint-Étienne-Bouthéon Airport', city: 'Saint-Étienne/Bouthéon' },
+      { code: 'PGF', title: 'Perpignan-Rivesaltes (Llabanère) Airport', city: 'Perpignan/Rivesaltes' },
+      { code: 'BVA', title: 'Paris Beauvais Tillé Airport', city: 'Beauvais/Tillé' },
+      { code: 'PIS', title: 'Poitiers-Biard Airport', city: 'Poitiers/Biard' }
+    ],
+  germany: [
+    { code: 'FRA', title: 'Frankfurt am Main Airport', city: 'Frankfurt am Main' },
+    { code: 'MUC', title: 'Munich Airport', city: 'Munich' },
+    { code: 'DUS', title: 'Düsseldorf Airport', city: 'Dusseldorf' },
+    { code: 'TXL', title: 'Berlin - Tegel Airport', city: 'Berlin' },
+    { code: 'HAM', title: 'Hamburg Airport', city: 'Hamburg' },
+    { code: 'STR', title: 'Stuttgart Airport', city: 'Stuttgart' },
+    { code: 'CGN', title: 'Cologne Bonn Airport', city: 'Cologne' },
+    { code: 'HAJ', title: 'Hannover Airport', city: 'Hannover' },
+    { code: 'SXF', title: 'Berlin - Schönefeld Airport', city: 'Berlin' },
+    { code: 'NUE', title: 'Nuremberg Airport', city: 'Nuremberg' },
+    { code: 'LEJ', title: 'Leipzig / Halle Airport', city: 'Leipzig' },
+    { code: 'BRE', title: 'Bremen Airport', city: 'Bremen' },
+    { code: 'DRS', title: 'Dresden Airport', city: 'Dresden' },
+    { code: 'DTM', title: 'Dortmund Airport', city: 'Dortmund' },
+    { code: 'FMM', title: 'Memmingen Allgau Airport', city: 'Memmingen' },
+    { code: 'FDH', title: 'Friedrichshafen Airport', city: 'Friedrichshafen' },
+    { code: 'FKB', title: 'Karlsruhe Baden - Baden Airport', city: 'Baden - Baden' },
+    { code: 'FMO', title: 'Münster Osnabrück Airport', city: 'Münster' },
+    { code: 'SCN', title: 'Saarbrücken Airport', city: 'Saarbrücken' },
+    { code: 'PAD', title: 'Paderborn Lippstadt Airport', city: 'Paderborn' },
+    { code: 'GWT', title: 'Westerland Sylt Airport', city: 'Westerland' },
+    { code: 'RLG', title: 'Rostock - Laage Airport', city: 'Rostock' },
+    { code: 'HHN', title: 'Frankfurt - Hahn Airport', city: 'Frankfurt am Main' },
+    { code: 'LBC', title: 'Lübeck Blankensee Airport', city: 'Lubeck' },
+    { code: 'KSF', title: 'Kassel - Calden Airport', city: 'Kassel' },
+    { code: 'HDF', title: 'Heringsdorf Airport', city: 'Heringsdorf' },
+    { code: 'ERF', title: 'Erfurt Airport', city: 'Erfurt' },
+    { code: 'MHG', title: 'Mannheim - City Airport', city: 'Mannheim' },
+    { code: 'NRN', title: 'Weeze Airport', city: 'Weeze' }
+  ],
+  italy: [
+    { code: 'FCO', title: 'Leonardo da Vinci–Fiumicino Airport', city: 'Rome' },
+    { code: 'MXP', title: 'Malpensa International Airport', city: 'Milan' },
+    { code: 'VCE', title: 'Venice Marco Polo Airport', city: 'Venice' },
+    { code: 'BLQ', title: 'Bologna Guglielmo Marconi Airport', city: 'Bologna' },
+    { code: 'NAP', title: 'Naples International Airport', city: 'Nápoli' },
+    { code: 'CTA', title: 'Catania-Fontanarossa Airport', city: 'Catania' },
+    { code: 'LIN', title: 'Milano Linate Airport', city: 'Milan' },
+    { code: 'TRN', title: 'Turin Airport', city: 'Torino' },
+    { code: 'FLR', title: 'Peretola Airport', city: 'Firenze' },
+    { code: 'VRN', title: 'Verona Villafranca Airport', city: 'Verona' },
+    { code: 'PMO', title: 'Falcone–Borsellino Airport', city: 'Palermo' },
+    { code: 'OLB', title: 'Olbia Costa Smeralda Airport', city: 'Olbia (SS)' },
+    { code: 'PSA', title: 'Pisa International Airport', city: 'Pisa' },
+    { code: 'BRI', title: 'Bari Karol Wojtyła Airport', city: 'Bari' },
+    { code: 'GOA', title: 'Genoa Cristoforo Colombo Airport', city: 'Genova' },
+    { code: 'CAG', title: 'Cagliari Elmas Airport', city: 'Cagliari' },
+    { code: 'SUF', title: 'Lamezia Terme Airport', city: 'Lamezia Terme (CZ)' },
+    { code: 'BGY', title: 'Il Caravaggio International Airport', city: 'Bergamo' },
+    { code: 'BDS', title: 'Brindisi – Salento Airport', city: 'Brindisi' },
+    { code: 'AHO', title: 'Alghero-Fertilia Airport', city: 'Alghero' },
+    { code: 'AOI', title: 'Ancona Falconara Airport', city: 'Ancona' },
+    { code: 'TSF', title: 'Treviso-Sant\'Angelo Airport', city: 'Treviso' },
+    { code: 'CUF', title: 'Cuneo International Airport', city: 'Cuneo' },
+    { code: 'TRS', title: 'Trieste–Friuli Venezia Giulia Airport', city: 'Trieste' },
+    { code: 'RMI', title: 'Federico Fellini International Airport', city: 'Rimini' },
+    { code: 'REG', title: 'Reggio Calabria Airport', city: 'Reggio Calabria' },
+    { code: 'BZO', title: 'Bolzano Airport', city: 'Bolzano' },
+    { code: 'CIA', title: 'Ciampino–G. B. Pastine International Airport', city: 'Rome' },
+    { code: 'EBA', title: 'Marina Di Campo Airport', city: 'Marina Di Campo' },
+    { code: 'PEG', title: 'Perugia San Francesco d\'Assisi – Umbria International Airport', city: 'Perugia' }
+  ]
+}
 function createText(type, text, position = null, rotation = null, scale = null) {
   object = document.createElement(type);
   object.setAttribute('text', text);
@@ -92,12 +191,16 @@ AFRAME.registerComponent('etageres', {
           m = -0.5;
           if (bbox == 1)
             m = 0.5;
-          text = randLetter();
+          // text = randLetter();
+          airport = randAirport();
+          text = airport.code;
+          destination = airport.country;
+          city = airport.city;
           numb = Math.random().toString().slice(2, 5);
           key = text + numb;
           eb.id = key;
-          rh = (2 + Math.floor(Math.random() * 6.5) + 1) * 0.1;
-          rw = (2.9 + Math.floor(Math.random() * 6.5) + 1) * 0.1;
+          rh = (2.8 + Math.floor(Math.random() * 7.5) + 1) * 0.1;
+          rw = (3.2 + Math.floor(Math.random() * 7.5) + 1) * 0.1;
           let color = randArray(["#EDD19F", "brown", "orange"])
           eb.setAttribute('data-text', text);
           eb.setAttribute('data-numb', numb);
@@ -166,9 +269,13 @@ AFRAME.registerComponent('etageres', {
           });
           b = createObject("a-box", 0.8, rh, rw, "0 0 0", "0 0 0", null, color);
           b2 = createObject("a-box", 0.03, 0.3, 0.4, "0.4 0 0", "0 0 0", null, "black");
+          b3 = createObject("a-box", 0.03, 0.07, rw, "0.4 0.2 0", "0 0 0", null, "white");
           t2 = createText("a-text", "anchor:align;width:3.3;color:white;value:" + text + ";align:center;shader:sdf", "0.02 0.06 0", "0 90 0", "1 1 1");
           t3 = createText("a-text", "anchor:align;width:3.3;color:white;value:" + numb + ";align:center;shader:sdf", "0.02 -0.06 0", "0 90 0", "1 1 1");
+          t4 = createText("a-text", "anchor:align;width:1.5;color:black;value:" + city + ";align:center;shader:sdf", "0.02 0 0", "0 90 0", "1 1 1");
           b.appendChild(b2);
+          b.appendChild(b3);
+          b3.appendChild(t4);
           b2.appendChild(t2);
           b2.appendChild(t3);
           eb.appendChild(b);
@@ -217,6 +324,31 @@ AFRAME.registerComponent('etageres', {
 
 function randArray(myArray) {
   return myArray[Math.floor(Math.random() * myArray.length)];
+}
+function randAirport() {
+  
+  let random_airport = Math.floor(Math.random() * 3);
+  let random_airport_index;
+  let country;
+  if(random_airport == 0){
+    country = 'france';
+  }
+  if(random_airport == 1){
+    country = 'germany';
+  }
+  if(random_airport == 2){
+    country = 'italy';
+  }
+  random_airport_index = Math.floor(Math.random() * airports[country].length);
+  // console.log("random_airport",random_airport);
+  // console.log("random_airport_index",random_airport_index);
+
+  return {
+    country:country, 
+    code: airports[country][random_airport_index].code, 
+    title: airports[country][random_airport_index].title,
+    city: airports[country][random_airport_index].city
+  }
 }
 function randLetter() {
   return Math.random().toString(36).replace(/[0-9]/g, '').slice(1, 4).toUpperCase()
@@ -332,17 +464,28 @@ AFRAME.registerComponent('logo1', {
 console.log("start init");
 AFRAME.registerComponent('instructions-listener', {
   init: function () {
+    console.log("init instructions-listener")
     this.el.addEventListener('click', (evt) => {
-      document.getElementById('menu_home').setAttribute('visible', 'false');
-      document.getElementById('menu_instructions').setAttribute('visible', 'true');
+      console.log("click instructions-listener")
+      setTimeout(() => {
+        if (menu)
+          document.getElementById('menu_home').setAttribute('visible', 'false');
+        document.getElementById('menu_instructions').setAttribute('visible', 'true');
+      }, 50);
     });
   }
 });
+
 AFRAME.registerComponent('back-listener', {
   init: function () {
+    console.log("init back-listener")
     this.el.addEventListener('click', (evt) => {
-      document.getElementById('menu_home').setAttribute('visible', 'true');
-      document.getElementById('menu_instructions').setAttribute('visible', 'false');
+      console.log("click back-listener")
+      setTimeout(() => {
+        document.getElementById('menu_home').setAttribute('visible', 'true');
+        document.getElementById('menu_instructions').setAttribute('visible', 'false');
+
+      }, 50)
     });
   }
 });
