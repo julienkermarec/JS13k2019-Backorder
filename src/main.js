@@ -1,26 +1,30 @@
-
 hand = null;
 boxs = [];
+boxs_left = [];
 in_hand = null;
+orders = [];
+nb_orders = null;
+score = 0;
+nb_order_completed = 0;
 
 airports = {
   france:
     [
       { code: 'CDG', title: 'Charles de Gaulle International Airport', city: 'Paris' },
       { code: 'NCE', title: 'Nice-Côte d\'Azur Airport', city: 'Nice' },
-      { code: 'LYS', title: 'Lyon Saint-Exupéry Airport', city: 'Lyon' },
+      { code: 'LYS', title: 'Lyon Saint-Exupery Airport', city: 'Lyon' },
       { code: 'MRS', title: 'Marseille Provence Airport', city: 'Marseille' },
       { code: 'TLS', title: 'Toulouse-Blagnac Airport', city: 'Toulouse/Blagnac' },
       { code: 'ORY', title: 'Paris-Orly Airport', city: 'Paris' },
-      { code: 'BSL', title: 'EuroAirport Basel-Mulhouse-Freiburg Airport', city: 'Bâle/Mulhouse' },
-      { code: 'BOD', title: 'Bordeaux-Mérignac Airport', city: 'Bordeaux/Mérignac' },
+      { code: 'BSL', title: 'EuroAirport Basel-Mulhouse-Freiburg Airport', city: 'Bale/Mulhouse' },
+      { code: 'BOD', title: 'Bordeaux-Merignac Airport', city: 'Bordeaux/Merignac' },
       { code: 'NTE', title: 'Nantes Atlantique Airport', city: 'Nantes' },
       { code: 'SXB', title: 'Strasbourg Airport', city: 'Strasbourg' },
       { code: 'LIL', title: 'Lille-Lesquin Airport', city: 'Lille/Lesquin' },
-      { code: 'AJA', title: 'Ajaccio-Napoléon Bonaparte Airport', city: 'Ajaccio/Napoléon Bonaparte' },
+      { code: 'AJA', title: 'Ajaccio-Napoleon Bonaparte Airport', city: 'Ajaccio/Napoleon Bonaparte' },
       { code: 'BES', title: 'Brest Bretagne Airport', city: 'Brest/Guipavas' },
       { code: 'BIA', title: 'Bastia-Poretta Airport', city: 'Bastia/Poretta' },
-      { code: 'MPL', title: 'Montpellier-Méditerranée Airport', city: 'Montpellier/Méditerranée' },
+      { code: 'MPL', title: 'Montpellier-Mediterranee Airport', city: 'Montpellier/Mediterranee' },
       { code: 'CLY', title: 'Calvi-Sainte-Catherine Airport', city: 'Calvi/Sainte-Catherine' },
       { code: 'FSC', title: 'Figari Sud-Corse Airport', city: 'Figari Sud-Corse' },
       { code: 'RNS', title: 'Rennes-Saint-Jacques Airport', city: 'Rennes/Saint-Jacques' },
@@ -28,13 +32,13 @@ airports = {
       { code: 'EGC', title: 'Bergerac-Roumanière Airport', city: 'Bergerac/Roumanière' },
       { code: 'LIG', title: 'Limoges Airport', city: 'Limoges/Bellegarde' },
       { code: 'CFE', title: 'Clermont-Ferrand Auvergne Airport', city: 'Clermont-Ferrand/Auvergne' },
-      { code: 'LRH', title: 'La Rochelle-Ile de Ré Airport', city: 'La Rochelle/Ile de Re' },
-      { code: 'PUF', title: 'Pau Pyrénées Airport', city: 'Pau/Pyrénées (Uzein)' },
-      { code: 'LDE', title: 'Tarbes-Lourdes-Pyrénées Airport', city: 'Tarbes/Lourdes/Pyrénées' },
+      { code: 'LRH', title: 'La Rochelle-Ile de Re Airport', city: 'La Rochelle/Ile de Re' },
+      { code: 'PUF', title: 'Pau Pyrenees Airport', city: 'Pau/Pyrenees (Uzein)' },
+      { code: 'LDE', title: 'Tarbes-Lourdes-Pyrenees Airport', city: 'Tarbes/Lourdes/Pyrenees' },
       { code: 'BVE', title: 'Brive Souillac Airport', city: 'Brive' },
-      { code: 'EBU', title: 'Saint-Étienne-Bouthéon Airport', city: 'Saint-Étienne/Bouthéon' },
+      { code: 'EBU', title: 'Saint-etienne-Boutheon Airport', city: 'Saint-etienne/Boutheon' },
       { code: 'PGF', title: 'Perpignan-Rivesaltes (Llabanère) Airport', city: 'Perpignan/Rivesaltes' },
-      { code: 'BVA', title: 'Paris Beauvais Tillé Airport', city: 'Beauvais/Tillé' },
+      { code: 'BVA', title: 'Paris Beauvais Tille Airport', city: 'Beauvais/Tille' },
       { code: 'PIS', title: 'Poitiers-Biard Airport', city: 'Poitiers/Biard' }
     ],
   germany: [
@@ -173,7 +177,7 @@ AFRAME.registerComponent('etageres', {
       //PIEDS
       ppos = ["-2.6 1.5 -2.4", "-2.6 1.5 -0.1", "-3.9 1.5 -0.1", "-3.9 1.5 -2.4"];
       for (let p of ppos) {
-        f = createObject("a-box", 1, 3, 1, p, null, "0.1 1 0.1", "blue");
+        f = createObject("a-box", 1, 3, 1, p, null, "0.1 1 0.1", "#A27B4B");
         e.appendChild(f);
       }
       //PLAQUE
@@ -188,38 +192,55 @@ AFRAME.registerComponent('etageres', {
         h = createObject("a-box", 1.5, 0.1, 2.5, "-3.25 " + p + " -1.250", null, "1 1 1", "black");
         for (let bbox of [0, 1]) {
           eb = document.createElement('a-entity');
-          m = -0.5;
+          m = -0.55;
           if (bbox == 1)
-            m = 0.5;
+            m = 0.55;
           // text = randLetter();
-          airport = randAirport();
-          text = airport.code;
-          destination = airport.country;
-          city = airport.city;
+          rh = (3.7 + Math.floor(Math.random() * 7.5) + 1) * 0.1;
+          rw = (3.2 + Math.floor(Math.random() * 7.5) + 1) * 0.1;
+
           numb = Math.random().toString().slice(2, 5);
+          airport = null;
+          while (airport == null || airport.city.length / 30 > rw) {
+            airport = randAirport();
+            text = airport.code;
+            destination = airport.country;
+            city = airport.city;
+            console.log(airport.code, numb, airport.city.length / 30, rw, airport.city.length / 30 > rw);
+          }
           key = text + numb;
           eb.id = key;
-          rh = (2.8 + Math.floor(Math.random() * 7.5) + 1) * 0.1;
-          rw = (3.2 + Math.floor(Math.random() * 7.5) + 1) * 0.1;
-          let color = randArray(["#EDD19F", "brown", "orange"])
+          colors = ["#EDD19F", "brown", "orange"];
+          let color = colors[randArray(colors)];
           eb.setAttribute('data-text', text);
           eb.setAttribute('data-numb', numb);
           eb.setAttribute('data-height', rh);
           eb.setAttribute('data-width', 0.8);
           eb.setAttribute('data-depth', rw);
           eb.setAttribute('data-color', color);
-          boxs.push(key);
+          eb.setAttribute('data-city', airport.city);
+          eb.setAttribute('data-country', airport.country);
+          eb.setAttribute('data-title', airport.title);
           eb.setAttribute('position', '0 ' + ((rh / 2) + 0.05) + ' ' + m);
+          boxs.push({ 
+            text: text, 
+            numb: numb, 
+            country: airport.country, 
+            city: airport.city, 
+            title: airport.title, 
+            key: key 
+          });
           eb.addEventListener('click', function (evt) {
             if (in_hand != null) {
               if (this.id == in_hand) {
                 this.childNodes[0].setAttribute('opacity', '1')
                 this.childNodes[0].childNodes[0].setAttribute('visible', 'true')
+                this.childNodes[0].childNodes[1].setAttribute('visible', 'true')
                 hb.setAttribute("visible", "false");
                 in_hand = null;
               }
               else {
-                playError();
+                playError("Bad place", 0);
               }
             }
             else {
@@ -227,6 +248,7 @@ AFRAME.registerComponent('etageres', {
               console.log("this", this);
               this.childNodes[0].setAttribute('opacity', '0.3')
               this.childNodes[0].childNodes[0].setAttribute('visible', 'false')
+              this.childNodes[0].childNodes[1].setAttribute('visible', 'false')
               // this.setAttribute('material', 'color', 'blue');
               hl = document.getElementById('hl');
               hr = document.getElementById('hr');
@@ -234,6 +256,8 @@ AFRAME.registerComponent('etageres', {
               hbc = document.getElementById('hbc');
               hbt1 = document.getElementById('hbt1');
               hbt2 = document.getElementById('hbt2');
+              hbcityt = document.getElementById('hbcity');
+              hbcityt = document.getElementById('hbcityt');
               hb.setAttribute("visible", "true");
               hbc.setAttribute("depth", 0.790);
               //depth = largeur
@@ -260,13 +284,16 @@ AFRAME.registerComponent('etageres', {
               hbc.setAttribute("width", this.getAttribute('data-width')); // DEPTH
               hbc.setAttribute("depth", this.getAttribute('data-height')); // HAUTEUR
               hbc.setAttribute("color", this.getAttribute('data-color'));
+              hbcity.setAttribute("depth", this.getAttribute('data-depth'));
               hbt1.setAttribute("text", "anchor:align;width:3.3;color:white;value:" + this.getAttribute('data-text') + ";align:center;shader:sdf");
               hbt2.setAttribute("text", "anchor:align;width:3.3;color:white;value:" + this.getAttribute('data-numb') + ";align:center;shader:sdf");
+              hbcityt.setAttribute("text", "width: 1.5; color: black; value: " + this.getAttribute('data-city') + "; align: center");
               console.log('I was clicked at: ', evt.detail.intersection.point);
 
 
             }
           });
+          //END CLICK
           b = createObject("a-box", 0.8, rh, rw, "0 0 0", "0 0 0", null, color);
           b2 = createObject("a-box", 0.03, 0.3, 0.4, "0.4 0 0", "0 0 0", null, "black");
           b3 = createObject("a-box", 0.03, 0.07, rw, "0.4 0.2 0", "0 0 0", null, "white");
@@ -288,55 +315,38 @@ AFRAME.registerComponent('etageres', {
       this.el.appendChild(e);
     }
 
-    function playError() {
-
-    }
-    //   <a-box position="-3 1 -3" material="color:#EDD19F" geometry="width:0.7" rotation="">
-    // <a-text text="anchor:align;width:5;color:#393939;value:RGB;align:center;shader:sdf" rotation="0 0 0" position="0 0 0">C32</a-text>
-    // </a-box>
-    //           <a-entity id="etagere" etagere="0" position="0 0 0" rotation="0 -90 0">
-    //   <a-box material="color:blue" geometry="primitive:box;depth:1;height:3" position="-2.6 1.5 -2.4" scale="0.1 1 0.1"></a-box>
-    //   <a-box material="color:blue" geometry="primitive:box;depth:1;height:3" position="-2.6 1.5 -0.1" scale="0.1 1 0.1"></a-box>
-    //   <a-box material="color:blue" geometry="primitive:box;depth:1;height:3" position="-3.9 1.5 -0.1" scale="0.1 1 0.1"></a-box>
-    //   <a-box material="color:blue" geometry="primitive:box;depth:1;height:3" position="-3.9 1.5 -2.4" scale="0.1 1 0.1"></a-box>
-    //   <a-box material="color:black" geometry="primitive:box;depth:25;height:0.1;width:1.5" position="-3.25 0.1 -1.250" scale="1 1 0.1"></a-box>
-    //   <a-box material="color:black" geometry="primitive:box;depth:25;height:0.1;width:1.5" position="-3.25 1.30 -1.250" scale="1 1 0.1"></a-box>
-    //   <a-box material="color:black" geometry="primitive:box;depth:25;height:0.1;width:1.5" position="-3.25 2.50 -1.250" scale="1 1 0.1"></a-box>
-    // </a-entity>
-    // for(i = 1; i < 5; i++){
-    //   for(j = 1; j < 5; j++){
-    //     offset =20;
-    // centered = 4/2;
-    //     box = document.createElement('a-box');
-    //     x = i * 4 - offset/2;
-    //     y = j * 4 - offset/2 ;
-    //     position= x + " 1 " + y;
-    //     box.setAttribute('color','blue');
-    //     box.setAttribute('position',position);
-    //     box.setAttribute('height','2');
-    //     box.setAttribute('depth','4');
-    //     console.log(box);
-    //     this.el.appendChild(box);
-    //   }
-    // }
   }
 });
 
+function playError(text, points) {
+  score -= points;
+  updateScore();
+  document.getElementById("error_container").innerHTML = text;
+  document.getElementById("error_container").style.display = 'block';
+  setTimeout(() => {
+    document.getElementById("error_container").style.display = 'none';
+  }, 800);
+
+}
+
 function randArray(myArray) {
+  return Math.floor(Math.random() * myArray.length);
+}
+function randArrayItem(myArray) {
   return myArray[Math.floor(Math.random() * myArray.length)];
 }
 function randAirport() {
-  
+
   let random_airport = Math.floor(Math.random() * 3);
   let random_airport_index;
   let country;
-  if(random_airport == 0){
+  if (random_airport == 0) {
     country = 'france';
   }
-  if(random_airport == 1){
+  if (random_airport == 1) {
     country = 'germany';
   }
-  if(random_airport == 2){
+  if (random_airport == 2) {
     country = 'italy';
   }
   random_airport_index = Math.floor(Math.random() * airports[country].length);
@@ -344,8 +354,8 @@ function randAirport() {
   // console.log("random_airport_index",random_airport_index);
 
   return {
-    country:country, 
-    code: airports[country][random_airport_index].code, 
+    country: country,
+    code: airports[country][random_airport_index].code,
     title: airports[country][random_airport_index].title,
     city: airports[country][random_airport_index].city
   }
@@ -377,7 +387,24 @@ function initEtagere() {
   });
 }
 
+function updateScore(){
+  document.getElementById('score').setAttribute("text","anchor:align;width:1.2;color:white;value:" + score + ";align:center;shader:sdf");
+}
+function validOrder(box_id){
+  console.log("validOrder",box_id)
+  element = document.getElementById(box_id);
+  console.log("element", element);
+  key = element.id;
+  nb_order_completed++;
+  score += 20;
+  updateScore();
 
+  document.getElementById("order_" + key).childNodes[0].setAttribute("opacity","0.3");
+  // document.getElementById("order_" + key).setAttribute("visible","false");
+  list = document.getElementById("view_orders_list");
+  left = -0.3 * (nb_orders - orders.length) - 0.3;
+  list.setAttribute("position",left + " 0 0");
+}
 
 AFRAME.registerComponent('dock-listener', {
   init: function () {
@@ -388,15 +415,23 @@ AFRAME.registerComponent('dock-listener', {
       if (in_hand != null) {
         box_id = in_hand;
         box_e = document.getElementById(box_id);
+        console.log("box_e.id",box_e.id);
+        console.log("boxs[nb_orders - boxs_left.length].key",boxs[nb_order_completed].key);
+        if(box_e.id.toString() !== orders[nb_order_completed].key.toString()){
+          playError("Bad order",10);
+            return;
+        }
+        if(box_e.getAttribute("data-country") !== this.id){
+          playError("Bad country",10);
+            return;
+        }
+        validOrder(box_id);
         hb = document.getElementById('hb');
         hbct = document.getElementById('hb_' + country);
         posy = 1.255 + (box_e.getAttribute('data-height') / 2)
         hbct.setAttribute('position', '0 ' + posy + ' -0.5');
         hbct.setAttribute('visible', 'true');
         hbct.setAttribute('animation', 'property: position; to: 0 ' + posy + ' -1.5; dur: 2000');
-        setTimeout(() => {
-          hbct.setAttribute('visible', 'false');
-        }, 2000)
 
         // animation = createAnimation('position','0 ' + posy + ' -0.5','ease',0,'normal',2000,0);
 
@@ -408,12 +443,21 @@ AFRAME.registerComponent('dock-listener', {
         hbc = document.getElementById('hbc_' + country);
         hbt1 = document.getElementById('hbt1_' + country);
         hbt2 = document.getElementById('hbt2_' + country);
+        hbcity = document.getElementById('hbcity_' + country);
+        hbcityt = document.getElementById('hbcityt_' + country);
         hbc.setAttribute("height", box_e.getAttribute('data-depth')); // LARGEUR
         hbc.setAttribute("width", box_e.getAttribute('data-width')); // DEPTH
         hbc.setAttribute("depth", box_e.getAttribute('data-height')); // HAUTEUR
         hbc.setAttribute("color", box_e.getAttribute('data-color'));
         hbt1.setAttribute("text", "anchor:align;width:3.3;color:white;value:" + box_e.getAttribute('data-text') + ";align:center;shader:sdf");
         hbt2.setAttribute("text", "anchor:align;width:3.3;color:white;value:" + box_e.getAttribute('data-numb') + ";align:center;shader:sdf");
+
+        hbcity.setAttribute("depth", box_e.getAttribute('data-depth'));
+        hbcityt.setAttribute("text", "width: 1.5; color: black; value: " + box_e.getAttribute('data-city') + "; align: center;shader:sdf");
+
+        setTimeout(() => {
+          hbct.setAttribute('visible', 'false');
+        }, 2000)
 
         in_hand = null;
       }
@@ -489,13 +533,48 @@ AFRAME.registerComponent('back-listener', {
     });
   }
 });
+function start() {
+  nb_orders = 10;
+  boxs_left = JSON.parse(JSON.stringify(boxs));
+  for (let i = 0; i < nb_orders; i++) {
+    addOrder();
+  }
+}
+function addOrder() {
+  random_index = randArray(boxs_left);
+  box = boxs_left[random_index];
+  boxs_left.splice(random_index, 1);
+  //   <a-entity id="order_1" position="0 -0.152 0" visible="true">
+  //   <a-box width="0.2" height="0.150" depth="0.01" position="0 0 0" scale="" color="black" material=""
+  //     opacity="1">
+  //     <a-text text="anchor:align;width:1.2;color:white;value:RGB;align:center;shader:sdf"
+  //       position="0 0.03 0.007" rotation="0 0 0" scale="1 1 1"></a-text>
+  //     <a-text text="anchor:align;width:1.2;color:white;value:123;align:center;shader:sdf"
+  //       position="0 -0.035 0.007" rotation="0 0 0" scale="1 1 1"></a-text>
+  //   </a-box>
+  // </a-entity>
+  left = orders.length > 0 ? 0.3 * orders.length : 0;
+  oe = document.createElement('a-entity');
+  oe.setAttribute('position', left + ' -0.152 0');
+  oe.setAttribute('id', "order_" + box.key);
+  ob = createObject('a-box',0.2,0.150,0.01,null,null,null,"black");
+  obt1 = createText("a-text", "anchor:align;width:1.2;color:white;value:" + box.text + ";align:center;shader:sdf", "0 0.03 0.007", null,null);
+  obt2 = createText("a-text", "anchor:align;width:1.2;color:white;value:" + box.numb + ";align:center;shader:sdf", "0 -0.035 0.007", null,null);
+          
+  ob.appendChild(obt1);
+  ob.appendChild(obt2);
+  oe.appendChild(ob);
+  document.getElementById('view_orders_list').appendChild(oe);
+
+  orders.push(box);
+}
 AFRAME.registerComponent('play-listener', {
   init: function () {
     timer = null;
     this.el.addEventListener('click', (evt) => {
       if (timer != null)
         return;
-      timer = 5;
+      timer = 2;
       document.getElementById('camera').childNodes[1].setAttribute('wasd-controls-enabled', 'true');
       document.getElementById('menu').setAttribute('visible', 'false');
       document.getElementById('view_countdown_text').setAttribute('text', 'anchor:align;width:7;color:black;value:' + timer + ';align:center;shader:sdf');
@@ -507,6 +586,7 @@ AFRAME.registerComponent('play-listener', {
           clearInterval(interval_timer);
           document.getElementById('view_countdown').setAttribute('visible', 'false');
           timer = null;
+          start();
         }
         console.log("timer", timer);
         document.getElementById('view_countdown_text').setAttribute('text', 'anchor:align;width:7;color:black;value:' + timer + ';align:center;shader:sdf');
