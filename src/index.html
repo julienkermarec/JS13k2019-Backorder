@@ -11,6 +11,24 @@
 <body>
   </script>
   <a-scene id="scene">
+    <a-assets>
+      <a-mixin id="box" position="0 0 0" geometry="primitive: box; depth: 0, height: 0; width: 0"
+        material="color: orange; opacity: 1; shader: flat" position="0 0 0"></a-mixin>
+      <!-- <a-box width="0.03" geometry="" height="0.3" depth="0.4" position="0 0 0" rotation="0 0 0" scale=""
+          color="black" material="" opacity="1">
+          <a-text text="anchor:align;width:3.3;color:white;value:RGB;align:center;shader:sdf" position="0.02 0.06 0"
+            rotation="0 90 0" scale="1 1 1"></a-text>
+          <a-text text="anchor:align;width:3.3;color:white;value:123;align:center;shader:sdf" position="0.02 -0.06 0"
+            rotation="0 90 0" scale="1 1 1"></a-text>
+        </a-box>
+        <a-box width="0.03" geometry="" rotation="-90 0 0" height="0.07" depth="0.8" position="0.386 0 -0.194"
+          rotation="" scale="" color="white" material="" opacity="1">
+          <a-text text="width: 1.5; color: black; value: xxxx; align: center" position="0.02 0 0" rotation="0 90 0"
+            scale="">
+          </a-text>
+        </a-box> -->
+      </a-mixin>
+    </a-assets>
     <!-- ETAGERE -->
     <a-entity id="etageres"></a-entity>
     </a-entity>
@@ -18,13 +36,16 @@
     <a-entity id="tapis">
       <!-- ALLEMAGNE -->
 
-      <a-entity position="-1.5 0 -2.5" dock-listener class="clickable" id="germany">
-        <a-box width="1.3" height="1.1" depth="2" position="0 0.65 -1" material="color:white" rotation=""></a-box>
-        <a-box width="1.1" height="0.1" depth="1.9" position="0 1.20 -1" material="color:red" rotation="">
+      <a-entity position="-1.5 0 -2.5" id="germany">
+        <a-box width="1.3" height="1.1" dock-listener class="clickable" depth="2" position="0 0.65 -1"
+          material="color:white" rotation=""></a-box>
+        <a-box width="1.1" height="0.1" dock-listener class="clickable" depth="1.9" position="0 1.20 -1"
+          material="color:red" rotation="">
         </a-box>
-        <a-box width="1.3" height="1.3" depth="1" position="0 1.85 -1.5" material="color:black;opacity: 0.5"
-          rotation=""></a-box>
-        <a-box width="1.3" height="1.3" depth="0.1" position="0 1.85 -1.95" material="color:black" rotation="">
+        <a-box width="1.3" height="1.3" dock-listener class="clickable" depth="1" position="0 1.85 -1.5"
+          material="color:black;opacity: 0.5" rotation=""></a-box>
+        <a-box width="1.3" height="1.3" dock-listener class="clickable" depth="0.1" position="0 1.85 -1.95"
+          material="color:black" rotation="">
         </a-box>
         <a-entity id="hb_germany" visible="false" position="0 1.45 -0.5" material="" rotation="90 0 90">
           <!-- <a-animation attribute="position" dur="3000" to="0 1.45 -1.5"></a-animation> -->
@@ -58,13 +79,16 @@
       </a-entity>
       <!-- FRANCE -->
 
-      <a-entity position="0 0 -2.5" dock-listener class="clickable" id="france">
-        <a-box width="1.3" height="1.1" depth="2" position="0 0.65 -1" material="color:white" rotation=""></a-box>
-        <a-box width="1.1" height="0.1" depth="1.9" position="0 1.20 -1" material="color:blue" rotation="">
+      <a-entity position="0 0 -2.5" id="france">
+        <a-box width="1.3" height="1.1" dock-listener class="clickable" depth="2" position="0 0.65 -1"
+          material="color:white" rotation=""></a-box>
+        <a-box width="1.1" height="0.1" dock-listener class="clickable" depth="1.9" position="0 1.20 -1"
+          material="color:blue" rotation="">
         </a-box>
-        <a-box width="1.3" height="1.3" depth="1" position="0 1.85 -1.5" material="color:black;opacity: 0.5"
-          rotation=""></a-box>
-        <a-box width="1.3" height="1.3" depth="0.1" position="0 1.85 -1.95" material="color:black" rotation="">
+        <a-box width="1.3" height="1.3" dock-listener class="clickable" depth="1" position="0 1.85 -1.5"
+          material="color:black;opacity: 0.5" rotation=""></a-box>
+        <a-box width="1.3" height="1.3" dock-listener class="clickable" depth="0.1" position="0 1.85 -1.95"
+          material="color:black" rotation="">
         </a-box>
 
         <a-entity id="hb_france" visible="false" position="0 1.45 -0.5" material="" rotation="90 0 90">
@@ -99,13 +123,16 @@
         </a-entity>
       </a-entity>
       <!-- ITALY -->
-      <a-entity position="1.5 0 -2.5" dock-listener class="clickable" id="italy">
-        <a-box width="1.3" height="1.1" depth="2" position="0 0.65 -1" material="color:white" rotation=""></a-box>
-        <a-box width="1.1" height="0.1" depth="1.9" position="0 1.20 -1" material="color:green" rotation="">
+      <a-entity position="1.5 0 -2.5" id="italy">
+        <a-box width="1.3" height="1.1" dock-listener class="clickable" depth="2" position="0 0.65 -1"
+          material="color:white" rotation=""></a-box>
+        <a-box width="1.1" height="0.1" dock-listener class="clickable" depth="1.9" position="0 1.20 -1"
+          material="color:green" rotation="">
         </a-box>
-        <a-box width="1.3" height="1.3" depth="1" position="0 1.85 -1.5" material="color:black;opacity: 0.5"
-          rotation=""></a-box>
-        <a-box width="1.3" height="1.3" depth="0.1" position="0 1.85 -1.95" material="color:black" rotation="">
+        <a-box width="1.3" height="1.3" dock-listener class="clickable" depth="1" position="0 1.85 -1.5"
+          material="color:black;opacity: 0.5" rotation=""></a-box>
+        <a-box width="1.3" height="1.3" dock-listener class="clickable" depth="0.1" position="0 1.85 -1.95"
+          material="color:black" rotation="">
         </a-box>
 
         <a-entity id="hb_italy" visible="false" position="0 1.45 -0.5" material="" rotation="90 0 90">
@@ -197,7 +224,7 @@
       <a-entity light="type: directional; color: #FFF; intensity: 0.8" position="0 6 1"></a-entity>
     </a-entity>
     <!-- MENU -->
-    <a-entity id="menu" visible="true" position="0 1.75 -0.65" rotation="-1.75 0 0">
+    <a-entity id="menu" visible="true" position="0 1.75 -1.15" rotation="-1.75 0 0">
       <a-entity id="menu_score" position="0 0 0" visible="false">
         <a-box color="gray" position="0 0 0" width="1.55" height="0.95" depth="0.01" opacity="0.7">
           <a-box color="gray" position="0 0 0" width="1.55" height="0.95" depth="0.01" opacity="0.7">
@@ -285,18 +312,17 @@
     </a-entity>
     <a-entity id="rig" position="0 0 0.6">
 
-      <a-entity position="0 0 0" inventory="" laser-controls="hand:right" raycaster daydream-controls=""
+      <!-- <a-entity position="0 0 0" inventory="" laser-controls="hand:right" raycaster daydream-controls=""
         gearvr-controls="" oculus-go-controls="" oculus-touch-controls="" vive-controls="" vive-focus-controls=""
         windows-motion-controls="">
       </a-entity>
       <a-entity position="0 0 0" laser-controls="hand:left" raycaster daydream-controls="" gearvr-controls=""
         oculus-go-controls="" oculus-touch-controls="" vive-controls="" vive-focus-controls=""
-        windows-motion-controls="">
-      </a-entity>
+        windows-motion-controls=""> -->
       <a-entity id="camera" camera="active: true" rotation="0 0 0" position="0 2.02 0" look-controls>
         <!-- <a-cursor color="white"> -->
-        <a-entity id="raycaster" raycaster cursor="rayOrigin:mouse" position="0 0 0"
-          material="color: black; shader: flat">
+        <a-entity id="raycaster" raycaster="objects: .clickable; recursive: false" raycaster-helper
+          cursor="rayOrigin:mouse" position="0 0 0" material="color: black; shader: flat">
         </a-entity>
         <a-entity view id="view" position="0 0 -1">
           <a-entity id="topbar" position="0 -0.2 0">
@@ -310,7 +336,7 @@
                 </a-box>
               </a-box>
             </a-entity>
-            <a-entity time-listener position="0.47 0.76 0" rotation="10 0 0" visible="true">
+            <a-entity time-listener class="clickable" position="0.47 0.76 0" rotation="10 0 0" visible="true">
               <a-box position="0 0 0" width="0.44" height="0.15" depth="0.01" color="#d88200">
                 <a-box position="0 0 0.002" width="0.4" height="0.13" depth="0.01" color="orange">
                   <a-box position="0 -0.03 0.002" width="0.3" height="0.04" depth="0.01" color="purple">
@@ -366,7 +392,7 @@
               color="#eda85e" opacity=0.7>
               <a-cylinder position="0 0 -1" rotation="0 0 90" color="#CCC" height="0.09" radius="0.1"></a-cylinder>
             </a-box>
-            <a-entity id="hb" visible="false" position="0 -4.8 -0.3" material="" rotation="65 0 90">
+            <a-entity id="hb" visible="false" position="0 -0.8 -0.3" material="" rotation="65 0 90">
               <a-box id="hbc" width="0.8" geometry="" height="0.9" depth="0.39" position="0 0 0" rotation="0 0 0"
                 scale="" color="orange" material="" opacity="1">
                 <a-box id="hbt" width="0.03" geometry="" height="0.3" depth="0.4" position="0.4 0 0" rotation="-90 0 0"
