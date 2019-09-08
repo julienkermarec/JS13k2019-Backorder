@@ -26,7 +26,7 @@ class AdvzipPlugin {
                 return;
             }
             const args = ["-a4", this.opt.out].concat(this.opt.files);
-            execFile(advzip, args, {cwd: this.opt.cwd}, () => {
+            execFile(advzip, args, { cwd: this.opt.cwd }, () => {
                 const out = path.resolve(this.opt.cwd, this.opt.out);
                 const stats = fs.statSync(out);
                 console.log(`Advzip: ${stats.size}`);
@@ -37,7 +37,7 @@ class AdvzipPlugin {
 
 module.exports = {
 
-    entry: "./src/main.js",
+    entry: "./src/main_bundle.js",
 
     resolve: {
         extensions: [".js", ".ts", ".tsx"]
@@ -107,9 +107,11 @@ module.exports = {
         new MiniCssExtractPlugin(),
         new HtmlWebpackPlugin({
             template: "src/index.html",
+            inject: false,
             inlineSource: ".(js|css)$",
             minify: {
-                collapseWhitespace: !isDev
+                collapseWhitespace: !isDev,
+                collapseBooleanAttributes: false
             }
         }),
         new HtmlWebpackInlineSourcePlugin(),
