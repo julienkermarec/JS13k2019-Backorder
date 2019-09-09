@@ -382,7 +382,7 @@ function createEtageres() {
                 eb.id = "box_" + box_id;
                 // START CLICK
                 eb.addEventListener('click', function (evt) {
-                    if (orders.length == 0)
+                    if (orders.length == 0 || (this.getAttribute("visible") == false))
                         return;
                     key = this.getAttribute("data-key");
                     color = this.getAttribute("data-color");
@@ -640,16 +640,19 @@ function addOrder() {
 }
 
 
-document.monetization.addEventListener('monetizationstart', function () {
-    if (document.monetization && document.monetization.state === 'started') {
-        timer += 20;
-        document.getElementById("coil_text").setAttribute("text", "anchor:align;width:1;color:black;value:Coil subscriber : + 20sec;align:center;shader:flat");
-    }
-});
 
 function init() {
     createEtageres();
     updateBoxs();
+    if (document.monetization) {
+
+        document.monetization.addEventListener('monetizationstart', function () {
+            if (document.monetization && document.monetization.state === 'started') {
+                timer += 20;
+                document.getElementById("coil_text").setAttribute("text", "anchor:align;width:1;color:black;value:Coil subscriber : + 20sec;align:center;shader:flat");
+            }
+        });
+    }
 }
 
 AFRAME.registerComponent('audio-listener', {
@@ -698,12 +701,17 @@ function addSound(key, settings) {
 }
 
 function playSound(key) {
-    if (!sound_on)
-        return;
+    try {
+        if (!sound_on)
+            return;
 
-    var data = sounds[key]
-    data.pools[data.tick].play()
-    data.tick = (data.tick + 1) % 2
+        data = sounds[key];
+        data.pools[data.tick].play();
+        data.tick = (data.tick + 1) % 2;
+    }
+    catch (e) {
+        console.error('sound error', e);
+    }
 }
 
 addSound('success', [0, , 0.0305, 0.4912, 0.2806, 0.4048, , , , , , 0.5548, 0.6526, , , , , , 1, , , , , 0.5])

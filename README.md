@@ -17,8 +17,6 @@ Click on box to grab them, and after tou have two choices :
     Click on countries dock to send them OR
     Click on the initial box position to cancel
 
-Options : 
-
 You can move on desktop, but it is not required
 Compatible with Desktop / Oculus
 Not friendly with Vive / GearVr / Daydream
