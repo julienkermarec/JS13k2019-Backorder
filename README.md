@@ -1,6 +1,6 @@
 # BACK ORDER STORE HOUSE
 
-"BACK ORDER STORE HOUSE" 
+"BACKORDER STOREHOUSE" 
 
 It's Black Friday, you need to dispatch all the parcels on backorder to the proper airports.
 
@@ -23,3 +23,9 @@ You can move on desktop, but it is not required
 Compatible with Desktop / Oculus / Vive / GearVr / Daydream
 
 Thanks to @herebefrogs for helping me for the release !
+
+Size : 
+
+Not minified : HTML : 26.7k / JS : 32k / Sound 19.1k
+Minified : HTML : 21.6k / JS : 22.5 / Sound 3.25k
+Advzip: 10.914k
