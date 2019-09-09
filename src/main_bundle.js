@@ -290,7 +290,7 @@ function updateBoxs() {
             city = airport.city;
         }
         key = text + numb;
-        colors = ["#EDD19F", "brown", "orange"];
+        colors = ["#87775c", "brown", "orange"];
         let color = colors[randArray(colors)];
         eb.innerHTML = "";
 
