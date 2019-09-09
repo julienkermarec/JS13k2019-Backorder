@@ -13,16 +13,15 @@ level = 1;
 timer = 120;
 timer_countdown = null;
 timer_interval = null;
-default_countdown = 1;
+default_countdown = 5;
+sound_on = true;
+show_airport = true;
 
 
 AFRAME.registerComponent('play-listener', {
     init: function () {
-        console.log("init play-listener ");
         countdown = null;
         this.el.addEventListener('click', (evt) => {
-            console.log("play-listener click");
-            console.log("play-listener countdown", countdown);
             if (countdown != null)
                 return;
             document.getElementById('camera').setAttribute('wasd-controls', '');
@@ -37,24 +36,10 @@ AFRAME.registerComponent('play-listener', {
     }
 });
 
-
-AFRAME.registerComponent('cursor-listener', {
-    init: function () {
-        var COLORS = ['red', 'green', 'blue', 'purple', 'pink', 'gray', 'brown'];
-        this.el.addEventListener('click', function (evt) {
-            var randomIndex = Math.floor(Math.random() * COLORS.length);
-            this.setAttribute('material', 'color', COLORS[randomIndex]);
-            console.log('I was clicked at: ', evt.detail.intersection.point);
-        });
-    }
-});
-
-
 AFRAME.registerComponent('instructions-listener', {
     init: function () {
-        console.log("init instructions-listener")
         this.el.addEventListener('click', (evt) => {
-            console.log("click instructions-listener")
+            playSound("click");
             setTimeout(() => {
                 if (menu) {
                     document.getElementById('menu_home').setAttribute('visible', 'false');
@@ -69,9 +54,8 @@ AFRAME.registerComponent('instructions-listener', {
 
 AFRAME.registerComponent('back-listener', {
     init: function () {
-        console.log("init back-listener")
         this.el.addEventListener('click', (evt) => {
-            console.log("click back-listener")
+            playSound("click");
             setTimeout(() => {
                 document.getElementById('menu_instructions').setAttribute('visible', 'false');
                 document.getElementById('menu_instructions').setAttribute('position', '0 5 0');
@@ -87,45 +71,28 @@ AFRAME.registerComponent('back-listener', {
 
 AFRAME.registerComponent('score-listener', {
     init: function () {
-        console.log("init score-listener ")
         this.el.addEventListener('click', (evt) => {
-            console.log("click score-listener ");
+            playSound("click");
             setTimeout(() => {
-                console.log("go to next level ?")
                 timer_countdown > 0 ? start(level++) : start(level);
             }, 50)
         });
     }
 });
 
-
-AFRAME.registerComponent('time-listener', {
-    init: function () {
-        this.el.addEventListener('click', function (evt) {
-            console.log("time-lsitener this", this.id);
-            console.log('I was clicked at: ', evt.detail.intersection.point);
-            // playError("time", 0);
-        })
-    }
-});
 AFRAME.registerComponent('dock-listener', {
     init: function () {
-        console.log("dock-listener init");
         this.el.addEventListener('click', function (evt) {
-            console.log("dock-listener this", this.parentNode.id);
-            console.log("in_hand", in_hand);
-            // playError("dock", 0);
             country = this.parentNode.id;
             if (orders.length == 0)
                 return;
             if (in_hand != null) {
                 box_id = in_hand;
                 box_e = document.getElementById(box_id);
-                console.log("boxs", boxs);
-                console.log("nb_order_completed", nb_order_completed);
-                console.log("orders", orders);
-                console.log("box_e.id", box_e.getAttribute('data-key'));
-                console.log("boxs[nb_orders - boxs_left.length].key", boxs[nb_order_completed].key);
+                if (box_e.getAttribute('data-numb').toString() !== orders[nb_order_completed].numb.toString()) {
+                    playError("Bad order id", 10);
+                    return;
+                }
                 if (box_e.getAttribute('data-key').toString() !== orders[nb_order_completed].key.toString()) {
                     playError("Bad order", 10);
                     return;
@@ -141,12 +108,6 @@ AFRAME.registerComponent('dock-listener', {
                 dhbct.setAttribute('position', '0 ' + posy + ' -0.5');
                 dhbct.setAttribute('visible', 'true');
                 dhbct.setAttribute('animation', 'property: position; to: 0 ' + posy + ' -1.5; dur: 2000');
-
-                // animation = createAnimation('position','0 ' + posy + ' -0.5','ease',0,'normal',2000,0);
-
-                // hbct.appendChild(animation);
-                // box_e.childNodes[0].setAttribute('opacity','1')
-                box_e.setAttribute('visible', 'false')
                 hb.setAttribute("visible", "false");
                 hb.setAttribute("position", "0 -4.8 -0.3");
 
@@ -162,8 +123,13 @@ AFRAME.registerComponent('dock-listener', {
                 dhbt1.setAttribute("text", "anchor:align;width:3.3;color:white;value:" + box_e.getAttribute('data-text') + ";align:center;shader:flat");
                 dhbt2.setAttribute("text", "anchor:align;width:3.3;color:white;value:" + box_e.getAttribute('data-numb') + ";align:center;shader:flat");
 
+                box_e.setAttribute('visible', 'false')
+                city = box_e.getAttribute('data-city')
+                if (!show_airport)
+                    city = text + " Airport";
+
                 dhbcity.setAttribute("depth", box_e.getAttribute('data-width'));
-                dhbcityt.setAttribute("text", "width: 1.5; color: black; value: " + box_e.getAttribute('data-city') + "; align: center;shader:flat");
+                dhbcityt.setAttribute("text", "width: 1.5; color: black; value: " + city + "; align: center;shader:flat");
 
                 setTimeout(() => {
                     dhbct.setAttribute('visible', 'false');
@@ -228,7 +194,7 @@ airports = {
         { code: 'FMM', title: 'Memmingen Allgau Airport', city: 'Memmingen' },
         { code: 'FDH', title: 'Friedrichshafen Airport', city: 'Friedrichshafen' },
         { code: 'FKB', title: 'Karlsruhe Baden - Baden Airport', city: 'Baden - Baden' },
-        { code: 'FMO', title: 'Munster Osnabrück Airport', city: 'Münster' },
+        { code: 'FMO', title: 'Munster Osnabrück Airport', city: 'Munster' },
         { code: 'SCN', title: 'Saarbrucken Airport', city: 'Saarbrucken' },
         { code: 'PAD', title: 'Paderborn Lippstadt Airport', city: 'Paderborn' },
         { code: 'GWT', title: 'Westerland Sylt Airport', city: 'Westerland' },
@@ -309,16 +275,12 @@ function createAnimation(attribute, to, easing, delay, direction, dur, repeat) {
 
 function updateBoxs() {
     for (let i = 0; i < (6 * 2 * 3); i++) {
-        // for (let i = 0; i < 6; i++) {
         eb = document.getElementById('box_' + i);
         m = -0.55;
         if (i % 2 !== 0)
             m = 0.55;
-        // text = randLetter();
         rh = (3.7 + Math.floor(Math.random() * 7.5) + 1) * 0.1;
         rw = (3.2 + Math.floor(Math.random() * 7.5) + 1) * 0.1;
-        // rh = 1;
-        // rw = 0.5;
         numb = Math.random().toString().slice(2, 5);
         airport = null;
         while (airport == null || airport.city.length / 30 > rw) {
@@ -326,22 +288,20 @@ function updateBoxs() {
             text = airport.code;
             destination = airport.country;
             city = airport.city;
-            // console.log(airport.code, numb, airport.city.length / 30, rw, airport.city.length / 30 > rw);
         }
         key = text + numb;
-        // eb.id = key;
         colors = ["#EDD19F", "brown", "orange"];
         let color = colors[randArray(colors)];
         eb.innerHTML = "";
 
-        // b = createObject("a-box", 0.8, rh, rw, "0 0 0", "0 0 0", null, color);
+        if (!show_airport)
+            city = text + " Airport";
+
         b2 = createObject("a-box", 0.03, 0.3, 0.4, "0.4 0 0", "0 0 0", null, "black");
         b3 = createObject("a-box", 0.03, 0.07, rw, "0.4 0.2 0", "0 0 0", null, "white");
         t2 = createText("a-text", "anchor:align;width:3.3;color:white;value:" + text + ";align:center;shader:flat", "0.02 0.06 0", "0 90 0", "1 1 1");
         t3 = createText("a-text", "anchor:align;width:3.3;color:white;value:" + numb + ";align:center;shader:flat", "0.02 -0.06 0", "0 90 0", "1 1 1");
         t4 = createText("a-text", "anchor:align;width:1.5;color:black;value:" + city + ";align:center;shader:flat", "0.02 0 0", "0 90 0", "1 1 1");
-        // b.appendChild(b2);
-        // b.appendChild(b3);
         b3.appendChild(t4);
         b2.appendChild(t2);
         b2.appendChild(t3);
@@ -350,16 +310,8 @@ function updateBoxs() {
         eb.innerHTML = "";
         eb.appendChild(b2);
         eb.appendChild(b3);
-
-        // eb.appendChild(b);
-
-
-        // console.log("eb", eb);
-        // eb.childNodes[0].setAttribute("width", rw);
-        // eb.childNodes[0].setAttribute("height", rh);
         eb.setAttribute('geometry', 'primitive: box; width: 0.8; height: ' + rh + '; depth: ' + rw + '');
         eb.setAttribute('material', 'color: ' + color + '; opacity: 1; shader: flat');
-        // console.log("rh", rh);
         eb.setAttribute('position', '0 ' + (rh / 2) + ' ' + m);
 
         eb.setAttribute('visible', 'true');
@@ -400,7 +352,6 @@ function createEtageres() {
 
     if (document.getElementById("etageres"))
         document.getElementById("etageres").innerHTML = "";
-    console.log("initEtageres");
     box_id = 0;
     etageres = [['0 0 0', '0 0 0'], ['0 0 0', '0 -180 0'], ['0 0 0', '0 90 0'], ['0 0 2.5', '0 0 0'], ['0 0 -2.5', '0 -180 0'], ['2.5 0 0', '0 90 0']]
     for (let etagere of etageres) {
@@ -433,19 +384,11 @@ function createEtageres() {
                 eb.addEventListener('click', function (evt) {
                     if (orders.length == 0)
                         return;
-                    console.log("----------------------");
-                    console.log("eb-click this", this);
-                    console.log("eb-click evt", evt);
-                    // console.log("eb-click id", this.id);
                     key = this.getAttribute("data-key");
                     color = this.getAttribute("data-color");
-                    // console.log("eb-click data-key", key);
-                    // console.log("in_hand", in_hand);
                     if (in_hand != null) {
                         if (this.id == in_hand) {
-
                             playSound("click");
-                            // this.childNodes[0].setAttribute('opacity', '1')
                             this.setAttribute('material', 'color: ' + color + '; opacity: 1; shader: flat');
                             this.childNodes[0].setAttribute('visible', 'true')
                             this.childNodes[1].setAttribute('visible', 'true')
@@ -462,17 +405,14 @@ function createEtageres() {
                         playSound("click");
                         in_hand = this.id;
                         this.setAttribute('material', 'color: ' + color + '; opacity: 0.3; shader: flat');
-                        // this.childNodes[0].setAttribute('opacity', '0.3')
                         this.childNodes[0].setAttribute('visible', 'false')
                         this.childNodes[1].setAttribute('visible', 'false')
-                        // this.setAttribute('material', 'color', 'blue');
                         hb.setAttribute("visible", "true");
                         hb.setAttribute("position", "0 -0.8 -0.3");
                         hbc.setAttribute("depth", 0.790);
                         //depth = largeur
                         //width = depth
                         //height = height
-                        console.log("this.getAttribute('data-depth')", this.getAttribute('data-depth'));
                         hrl = '-20 0 0';
                         hrr = '-20 0 0';
                         if (this.getAttribute('data-width') < 0.5) {
@@ -487,7 +427,11 @@ function createEtageres() {
                             hrl = '-20 8 0';
                             hrr = '-20 -8 0';
                         }
-                        console.log("hrl", hrl);
+
+                        city = this.getAttribute('data-city')
+                        if (!show_airport)
+                            city = this.getAttribute('data-text') + " Airport";
+
                         hl.setAttribute('rotation', hrl);
                         hr.setAttribute('rotation', hrr);
                         hbc.setAttribute("height", this.getAttribute('data-width')); // LARGEUR
@@ -497,10 +441,7 @@ function createEtageres() {
                         hbcity.setAttribute("depth", this.getAttribute('data-width'));
                         hbt1.setAttribute("text", "anchor:align;width:3.3;color:white;value:" + this.getAttribute('data-text') + ";align:center;shader:flat");
                         hbt2.setAttribute("text", "anchor:align;width:3.3;color:white;value:" + this.getAttribute('data-numb') + ";align:center;shader:flat");
-                        hbcityt.setAttribute("text", "width: 1.5; color: black; value: " + this.getAttribute('data-city') + "; align: center");
-                        console.log('I was clicked at: ', evt.detail.intersection.point);
-
-
+                        hbcityt.setAttribute("text", "width: 1.5; color: black; value: " + city + "; align: center");
                     }
                 });
                 //END CLICK
@@ -514,19 +455,11 @@ function createEtageres() {
         if (document.getElementById("etageres")) {
             document.getElementById("etageres").appendChild(e);
         }
-        //     for (box of boxs) {
-        //         console.log("box.key", box.key);
-        //         console.log("document.getElementById(box.key)", document.getElementById('etageres').components);
-        //         document.getElementById(box.key).components.raycaster.refreshObjects();
-        //     }
-        // }
     }
 
 }
-// });
 
 function playError(text, points) {
-    console.log("playError", points);
     score -= points;
     updateScore();
     playSound('error');
@@ -559,8 +492,6 @@ function randAirport() {
         country = 'italy';
     }
     random_airport_index = Math.floor(Math.random() * airports[country].length);
-    // console.log("random_airport",random_airport);
-    // console.log("random_airport_index",random_airport_index);
 
     return {
         country: country,
@@ -574,24 +505,20 @@ function randLetter() {
 }
 
 function updateScore() {
-    console.log("updateScore", score);
     document.getElementById('score').setAttribute("text", "anchor:align;width:1.2;color:white;value:Score : " + score + ";align:center;shader:flat");
 }
 function updateLevel() {
     document.getElementById('level').setAttribute("text", "anchor:align;width:1.2;color:white;value:Level " + level + ";align:center;shader:flat");
 }
 function validOrder(box_id) {
-    console.log("validOrder", box_id)
     element = document.getElementById(box_id);
-    console.log("element", element);
     key = element.getAttribute('data-key');
     nb_order_completed++;
     playSound("success");
     score += 20;
     updateScore();
 
-    document.getElementById("order_" + key).childNodes[0].setAttribute("opacity", "0.3");
-    // document.getElementById("order_" + key).setAttribute("visible","false");
+    document.getElementById("order_" + key).childNodes[0].setAttribute("color", "dimgray");
     list = document.getElementById("view_orders_list");
     left = -0.3 * (nb_order_completed);
     list.setAttribute("position", left + " 0 0");
@@ -612,7 +539,6 @@ function start() {
     score = 0;
     updateScore();
     updateLevel();
-    console.log("start", level);
     updateBoxs();
 
     document.getElementById('menu').setAttribute('visible', 'false');
@@ -622,27 +548,29 @@ function start() {
     document.getElementById('menu_instructions').setAttribute('visible', 'false');
 
     countdown = default_countdown;
-    console.log("start countdown", countdown);
     document.getElementById('view_countdown_text').setAttribute('text', 'anchor:align;width:7;color:black;value:' + countdown + ';align:center;shader:flat');
     document.getElementById('view_countdown').setAttribute('visible', 'true');
 
+    playSound("countdown");
     document.getElementById('camera').setAttribute('wasd-controls', 'acceleration: 180');
     interval_countdown = setInterval(() => {
-        console.log("countdown", countdown);
+
         countdown--;
         document.getElementById('view_countdown_text').setAttribute('text', 'anchor:align;width:7;color:black;value:' + countdown + ';align:center;shader:flat');
 
-        if (countdown == 0) {
-            console.log("clear interval");
+        if (countdown <= 0) {
+            playSound("launch");
             clearInterval(interval_countdown);
             document.getElementById('view_countdown').setAttribute('visible', 'false');
             countdown = null;
             launch();
         }
+        else {
+            playSound("countdown");
+        }
     }, 1000);
 }
 function launch() {
-    console.log("--- launch ----- ");
     nb_orders = 0 + (4 * level);
     boxs_left = JSON.parse(JSON.stringify(boxs));
     for (let i = 0; i < nb_orders; i++) {
@@ -651,11 +579,8 @@ function launch() {
     timer_countdown = timer;
     timer_interval = setInterval(() => {
         timer_countdown--;
-        // console.log("timer_countdown", timer_countdown);
-        // console.log("timer", timer);
         width = 0.285 * (timer_countdown / timer);
         left = (width / 2) - 0.1425;
-        // console.log("width", width);
         timer_element = document.getElementById("timer");
         timer_element.setAttribute("position", left + " -0.002 0.002")
         timer_element.setAttribute("width", width);
@@ -681,46 +606,23 @@ function finishScreen() {
 
     title = timer_countdown > 0 ? 'ORDERS COMPLETED !' : (nb_orders - nb_order_completed) + ' ORDERS LEFT !';
     document.getElementById("menu_score_title").setAttribute("text", "anchor:align;width:2.5;color:white;value:" + title + ";align:center;shader:flat")
-    // (" + timer_countdown + " sec left)
     for (let element of elements) {
-        text = (element == "menu_score_level" ? "Level : " + level : (element == "menu_score_score" ? "Score : " + score : (timer_countdown > 0 ? "Time : " + (timer - timer_countdown) + "seconds" : nb_order_completed + "/" + nb_orders + " orders")));
+        text = (element == "menu_score_level" ? "Level : " + level : (element == "menu_score_score" ? "Score : " + score : (timer_countdown > 0 ? "Time : " + (timer - timer_countdown) + "/120 sec" : nb_order_completed + "/" + nb_orders + " orders")));
         document.getElementById(element).setAttribute("text", "anchor:align;lineHeight: 40; wrapCount: 30; width:1.3;color:white;value:" + text + ";align:center;shader:flat")
     }
 
     text = timer_countdown > 0 ? 'Next level ->' : '<- Retry';
     document.getElementById('menu_score_button').setAttribute('text', 'anchor:align;width:2.1;color:white;value:' + text + ';align:center;shader:flat');
 
-    // document.getElementById('camera').childNodes[1].setAttribute('wasd-controls-enabled', 'false');
-    // document.getElementById('camera').childNodes[1].setAttribute('wasd-controls', '');
-
-    // document.getElementById('camera').setAttribute('position', "0 1.252 -3");
-    // //console.log('YOU LO0SE');
-    // document.getElementById('camera2').setAttribute('rotation', "0 0 0");
-    // document.getElementById('camera2').setAttribute('position', '0 2 1.8');
-    // console.log("position = ", document.getElementById('camera2').getAttribute('position'));
-    // console.log("rotation = ", document.getElementById('camera2').getAttribute('rotation'));
     let rotation = document.getElementById('camera').getAttribute('rotation');
-    console.log("rotation", rotation)
-    // document.getElementById('rig').setAttribute('rotation', '0 -90 0');
-    document.getElementById('camera').setAttribute('position', '0 2.02 0');
+    document.getElementById('camera').setAttribute('position', '0 1.52 0');
     document.getElementById('camera').removeAttribute('wasd-controls');
     document.getElementById('rig').setAttribute('rotation', '0 ' + (rotation.y * -1) + ' 0');
-    // console.log("position = ", document.getElementById('camera2').getAttribute('position'));
-    // console.log("rotation = ", document.getElementById('camera').getAttribute('rotation'));
 }
 function addOrder() {
     random_index = randArray(boxs_left);
     box = boxs_left[random_index];
     boxs_left.splice(random_index, 1);
-    //   <a-entity id="order_1" position="0 -0.152 0" visible="true">
-    //   <a-box width="0.2" height="0.150" depth="0.01" position="0 0 0" scale="" color="black" material=""
-    //     opacity="1">
-    //     <a-text text="anchor:align;width:1.2;color:white;value:RGB;align:center;shader:flat"
-    //       position="0 0.03 0.007" rotation="0 0 0" scale="1 1 1"></a-text>
-    //     <a-text text="anchor:align;width:1.2;color:white;value:123;align:center;shader:flat"
-    //       position="0 -0.035 0.007" rotation="0 0 0" scale="1 1 1"></a-text>
-    //   </a-box>
-    // </a-entity>
     left = orders.length > 0 ? 0.3 * orders.length : 0;
     oe = document.createElement('a-entity');
     oe.setAttribute('position', left + ' -0.152 0');
@@ -741,9 +643,6 @@ function addOrder() {
 
 
 function init() {
-
-    // console.log("position = ", document.getElementById('camera2').getAttribute('position'));
-    // console.log("rotation = ", document.getElementById('camera2').getAttribute('rotation'));
     createEtageres();
     updateBoxs();
 }
@@ -751,7 +650,26 @@ function init() {
 AFRAME.registerComponent('audio-listener', {
     init: function () {
         this.el.addEventListener('click', () => {
-            playSound('success')
+            playSound("click");
+            sound_on = !sound_on;
+            text = "Sounds ON";
+            if (!sound_on)
+                text = "Sounds OFF";
+
+            document.getElementById("sound_on").setAttribute("text", "anchor:align;width:1.1;color:white;value:" + text + ";align:center;shader:flat")
+        });
+    }
+})
+AFRAME.registerComponent('options-listener', {
+    init: function () {
+        this.el.addEventListener('click', () => {
+            playSound("click");
+            show_airport = !show_airport;
+            text = "Show Airport City";
+            if (!show_airport)
+                text = "Hide Airport City";
+
+            document.getElementById("show_airport").setAttribute("text", "anchor:align;width:1.1;color:white;value:" + text + ";align:center;shader:flat")
         });
     }
 })
@@ -775,22 +693,16 @@ function addSound(key, settings) {
 }
 
 function playSound(key) {
+    if (!sound_on)
+        return;
+
     var data = sounds[key]
     data.pools[data.tick].play()
     data.tick = (data.tick + 1) % 2
 }
 
-
 addSound('success', [0, , 0.0305, 0.4912, 0.2806, 0.4048, , , , , , 0.5548, 0.6526, , , , , , 1, , , , , 0.5])
 addSound('error', [2, 0.0251, 0.3694, 0.5961, 0.5022, 0.5, , -0.321, , -0.2269, -0.715, -0.1264, -0.4872, 0.2066, -0.8327, , 0.9355, 0.0208, 0.7116, 0.0024, -0.6348, 0.0139, -0.0062, 0.5])
 addSound('click', [1, , 0.1524, , 0.0633, 0.5273, , , , , , , , , , , , , 1, , , 0.1, , 0.5])
-
-// TODO-LIST
-  // -- START SCREEN -
-  // -- ORDER INTERFACE 
-  // -- INSTRUCTIONS - 
-  // -- COUNTDOWN -
-  // -- GENERATE ORDER -
-  // -- countdown
-  // -- SOUNDS 
-  // -- SCORE RECORD
+addSound('countdown', [0, , 0.0642, 0.4522, 0.2075, 0.6923, , , , , , , , , , , , , 1, , , , , 0.5])
+addSound('launch', [0, , 0.0169, 0.5534, 0.3706, 0.6179, , , , , , 0.4216, 0.5089, , , , , , 1, , , , , 0.5])

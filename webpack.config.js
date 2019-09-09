@@ -35,8 +35,17 @@ class AdvzipPlugin {
     }
 }
 
-module.exports = {
+module.exports = [{
+    entry: "./src/jsfxr.js",
 
+    output: {
+        path: distDir,
+        filename: "jsfxr.js"
+    },
+
+}, {
+
+    // entry: { main: "./src/main_bundle.js", jsfxr: "./src/jsfxr.js" },
     entry: "./src/main_bundle.js",
 
     resolve: {
@@ -118,8 +127,8 @@ module.exports = {
         new AdvzipPlugin({
             cwd: distDir,
             out: "game.zip",
-            files: ["index.html"],
+            files: ["index.html", "main_bundle.js", "jsfxr.js"],
             disabled: isDev
         })
     ]
-};
+}];
