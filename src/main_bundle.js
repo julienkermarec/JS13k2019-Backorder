@@ -640,7 +640,12 @@ function addOrder() {
 }
 
 
-
+document.monetization.addEventListener('monetizationstart', function () {
+    if (document.monetization && document.monetization.state === 'started') {
+        timer += 20;
+        document.getElementById("coil_text").setAttribute("text", "anchor:align;width:1;color:black;value:Coil subscriber : + 20sec;align:center;shader:flat");
+    }
+});
 
 function init() {
     createEtageres();

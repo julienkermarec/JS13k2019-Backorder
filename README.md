@@ -20,12 +20,16 @@ Click on box to grab them, and after tou have two choices :
 Options : 
 
 You can move on desktop, but it is not required
-Compatible with Desktop / Oculus / Vive / GearVr / Daydream
+Compatible with Desktop / Oculus
+Not friendly with Vive / GearVr / Daydream
 
 Thanks to @herebefrogs for helping me for the release !
 
+Coil monetization : 
+Coil subscribers unlock 20 secondes more 
+
 Size : 
 
-Not minified : HTML : 26.7k / JS : 32k / Sound 19.1k
-Minified : HTML : 21.6k / JS : 22.5 / Sound 3.25k
-Advzip: 10.914k
+Not minified : HTML : 27.1k / JS : 32.2k / Sound 19.1k
+Minified : HTML : 21.9k / JS : 22.7 / Sound 3.25k
+Advzip: 10.977k

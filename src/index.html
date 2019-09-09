@@ -245,6 +245,12 @@
           <a-text position="0 0.35 0.03" text="anchor:align;width:2.5;color:white;value:MENU;align:center;shader:flat">
           </a-text>
         </a-box>
+        <a-box color="yellow" width="0.6" height="0.12" depth="0.01" position="0.545 0.369 0.019" rotation="0 0 -20"
+          opacity="1">
+          <a-text id="coil_text" position="0 0 0.01"
+            text="anchor:align;width:1;color:black;value:Coil subscription : + 20sec;align:center;shader:flat">
+          </a-text>
+        </a-box>
         <a-box color="black" position="0 0.15 0.01" width="0.84" height="0.23" depth="0.01" id="play" opacity="1"
           play-listener class="clickable">
           <a-box color="orange" position="0 0 0.011" width="0.78" height="0.19" depth="0.01" opacity="1">
@@ -314,110 +320,101 @@
       </a-entity>
     </a-entity>
     <a-sky color="gray"></a-sky>
-    </a-entity>
     <a-entity id="rig" position="0 0.5 0.2">
-
-      <a-entity position="0 0 0" inventory="" laser-controls="hand:right" raycaster="objects: .clickable"
-        daydream-controls="" gearvr-controls="" oculus-go-controls="" oculus-touch-controls="" vive-controls=""
-        vive-focus-controls="" windows-motion-controls="">
-      </a-entity>
-      <a-entity position="0 0 0" laser-controls="hand:left" raycaster="objects: .clickable" daydream-controls=""
-        gearvr-controls="" oculus-go-controls="" oculus-touch-controls="" vive-controls="" vive-focus-controls=""
-        windows-motion-controls="">
-        <a-entity id="camera" camera="active: true" rotation="0 0 0" position="0  1.52 0" look-controls>
-          <!-- <a-cursor color="white"> -->
-          <a-entity id="raycaster" raycaster="objects: .clickable" raycaster-helper cursor="rayOrigin:mouse"
-            position="0 0 0" material="color: black; shader: flat">
-          </a-entity>
-          <a-entity view id="view" position="0 0 -1">
-            <a-entity id="topbar" position="0 -0.30 0">
-              <a-entity id="view_score" position="-0.47 0.76 0" rotation="10 0 0" visible="true">
-                <a-box position="0 0 0" width="0.44" height="0.15" depth="0.01" color="darkblue">
-                  <a-box position="0 0 0.002" width="0.4" height="0.13" depth="0.01" color="blue">
-                    <a-text id="level" position="0 0.03 0.008"
-                      text="anchor:align;width:1.2;color:white;value:Level 1;align:center;shader:flat"></a-text>
-                    <a-text id="score" position="0 -0.03 0.008"
-                      text="anchor:align;width:1.2;color:white;value:Score : 0;align:center;shader:flat"></a-text>
-                  </a-box>
+      <a-entity position="0 0 0" laser-controls="hand:right" raycaster="objects: .clickable"></a-entity>
+      <a-entity position="0 0 0" laser-controls="hand:left" raycaster="objects: .clickable"></a-entity>
+      <a-entity id="camera" camera="active: true" rotation="0 0 0" position="0  1.52 0" look-controls>
+        <a-entity id="raycaster" raycaster="objects: .clickable" cursor="rayOrigin:mouse" position="0 0 0"
+          material="color: black; shader: flat">
+        </a-entity>
+        <a-entity view id="view" position="0 0 -1">
+          <a-entity id="topbar" position="0 -0.30 0">
+            <a-entity id="view_score" position="-0.47 0.76 0" rotation="10 0 0" visible="true">
+              <a-box position="0 0 0" width="0.44" height="0.15" depth="0.01" color="darkblue">
+                <a-box position="0 0 0.002" width="0.4" height="0.13" depth="0.01" color="blue">
+                  <a-text id="level" position="0 0.03 0.008"
+                    text="anchor:align;width:1.2;color:white;value:Level 1;align:center;shader:flat"></a-text>
+                  <a-text id="score" position="0 -0.03 0.008"
+                    text="anchor:align;width:1.2;color:white;value:Score : 0;align:center;shader:flat"></a-text>
                 </a-box>
-              </a-entity>
-              <a-entity position="0.47 0.76 0" rotation="10 0 0" visible="true">
-                <a-box position="0 0 0" width="0.44" height="0.15" depth="0.01" color="#d88200">
-                  <a-box position="0 0 0.002" width="0.4" height="0.13" depth="0.01" color="orange">
-                    <a-box position="0 -0.03 0.002" width="0.3" height="0.04" depth="0.01" color="purple">
-                      <a-box id="timer" position="0 -0.002 0.002" width="0.285" height="0.026" depth="0.01"
-                        color="white">
-                      </a-box>
+              </a-box>
+            </a-entity>
+            <a-entity position="0.47 0.76 0" rotation="10 0 0" visible="true">
+              <a-box position="0 0 0" width="0.44" height="0.15" depth="0.01" color="#d88200">
+                <a-box position="0 0 0.002" width="0.4" height="0.13" depth="0.01" color="orange">
+                  <a-box position="0 -0.03 0.002" width="0.3" height="0.04" depth="0.01" color="purple">
+                    <a-box id="timer" position="0 -0.002 0.002" width="0.285" height="0.026" depth="0.01" color="white">
                     </a-box>
-                    <a-text position="0 0.03 0.008"
-                      text="anchor:align;width:1.2;color:white;value:Timer;align:center;shader:flat"></a-text>
                   </a-box>
+                  <a-text position="0 0.03 0.008"
+                    text="anchor:align;width:1.2;color:white;value:Timer;align:center;shader:flat"></a-text>
                 </a-box>
-              </a-entity>
-              <a-entity id="view_orders" position="0 0.76 0" rotation="10 0 0" visible="true">
-                <a-box position="0 0 0" width="0.44" height="0.15" depth="0.01" color="darkgray">
-                  <a-box position="0 0 0.002" width="0.4" height="0.13" depth="0.01" color="gray">
-                    <a-text position="0 0 0.008"
-                      text="anchor:align;width:1.4;color:white;value:ORDERS;align:center;shader:flat"></a-text>
-                  </a-box>
-                </a-box>
-                <a-entity id="view_orders_list" position="0 0 0">
-
-                </a-entity>
-              </a-entity>
-            </a-entity>
-
-            <a-entity id="error" visible="false">
-              <a-box position="0 0 -1" width="1.2" height="0.6" depth="0.01" color="red">
-
-                <a-box color="black" position="0 0.3 0.02" width="1.22" height="0.03" depth="0.01" opacity="1"></a-box>
-                <a-box color="black" position="0 -0.3 0.02" width="1.22" height="0.03" depth="0.01" opacity="1"></a-box>
-                <a-box color="black" position="-0.6 0 0.02" width="0.03" height="0.62" depth="0.01" opacity="1"></a-box>
-                <a-box color="black" position="0.6 0 0.02" width="0.03" height="0.62" depth="0.01" opacity="1"></a-box>
-                <a-text id="error_text" position="-0.01 0 0.2"
-                  text="anchor:align;width:2.8;color:white;value:Bad country;align:center;shader:flat"></a-text>
               </a-box>
             </a-entity>
-            <a-entity id="view_countdown" visible="false">
-              <a-box position="0 0 -1" width="0.6" height="0.6" depth="0.01" color="white">
-
-                <a-box color="black" position="0 0.3 0.02" width="0.62" height="0.03" depth="0.01" opacity="1"></a-box>
-                <a-box color="black" position="0 -0.3 0.02" width="0.62" height="0.03" depth="0.01" opacity="1"></a-box>
-                <a-box color="black" position="-0.3 0 0.02" width="0.03" height="0.62" depth="0.01" opacity="1"></a-box>
-                <a-box color="black" position="0.3 0 0.02" width="0.03" height="0.62" depth="0.01" opacity="1"></a-box>
-                <a-text id="view_countdown_text" position="-0.01 0 0.2"
-                  text="anchor:align;width:7;color:black;value:x;align:center;shader:flat"></a-text>
-              </a-box>
-            </a-entity>
-            <a-entity id="view_human" position="0 0.05 0">
-              <a-box id="hl" position="-0.5 -0.25 0.8" rotation="-20 0 0" width="0.1" height="0.1" depth="2"
-                color="#eda85e" opacity=0.7>
-                <a-cylinder position="0 0 -1" rotation="0 0 90" color="#CCC" height="0.09" radius="0.1"></a-cylinder>
-              </a-box>
-              <a-box id="hr" position="0.5 -0.25 0.8" rotation="-20 0 0" width="0.1" height="0.1" depth="2"
-                color="#eda85e" opacity=0.7>
-                <a-cylinder position="0 0 -1" rotation="0 0 90" color="#CCC" height="0.09" radius="0.1"></a-cylinder>
-              </a-box>
-              <a-entity id="hb" visible="false" position="0 -0.8 -0.3" material="" rotation="65 0 90">
-                <a-box id="hbc" width="0.8" geometry="" height="0.9" depth="0.39" position="0 0 0" rotation="0 0 0"
-                  scale="" color="orange" material="" opacity="1">
-                  <a-box id="hbt" width="0.03" geometry="" height="0.3" depth="0.4" position="0.4 0 0"
-                    rotation="-90 0 0" scale="" color="black" material="" opacity="1">
-                    <a-text id="hbt1" text="anchor:align;width:3.3;color:white;value:RGB;align:center;shader:flat"
-                      position="0.02 0.06 0" rotation="0 90 0" scale="1 1 1"></a-text>
-                    <a-text id="hbt2" text="anchor:align;width:3.3;color:white;value:123;align:center;shader:flat"
-                      position="0.02 -0.06 0" rotation="0 90 0" scale="1 1 1"></a-text>
-                  </a-box>
-                  <a-box id="hbcity" width="0.03" geometry="" rotation="-90 0 0" height="0.07" depth="0.9"
-                    position="0.386 0 -0.194" rotation="" scale="" color="white" material="" opacity="1">
-                    <a-text id="hbcityt" text="width: 1.5; color: black; value: xxxx; align: center" position="0.02 0 0"
-                      rotation="0 90 0" scale=""></a-text>
-                  </a-box>
+            <a-entity id="view_orders" position="0 0.76 0" rotation="10 0 0" visible="true">
+              <a-box position="0 0 0" width="0.44" height="0.15" depth="0.01" color="darkgray">
+                <a-box position="0 0 0.002" width="0.4" height="0.13" depth="0.01" color="gray">
+                  <a-text position="0 0 0.008"
+                    text="anchor:align;width:1.4;color:white;value:ORDERS;align:center;shader:flat"></a-text>
                 </a-box>
+              </a-box>
+              <a-entity id="view_orders_list" position="0 0 0">
+
               </a-entity>
+            </a-entity>
+          </a-entity>
+
+          <a-entity id="error" visible="false">
+            <a-box position="0 0 -1" width="1.2" height="0.6" depth="0.01" color="red">
+
+              <a-box color="black" position="0 0.3 0.02" width="1.22" height="0.03" depth="0.01" opacity="1"></a-box>
+              <a-box color="black" position="0 -0.3 0.02" width="1.22" height="0.03" depth="0.01" opacity="1"></a-box>
+              <a-box color="black" position="-0.6 0 0.02" width="0.03" height="0.62" depth="0.01" opacity="1"></a-box>
+              <a-box color="black" position="0.6 0 0.02" width="0.03" height="0.62" depth="0.01" opacity="1"></a-box>
+              <a-text id="error_text" position="-0.01 0 0.2"
+                text="anchor:align;width:2.8;color:white;value:Bad country;align:center;shader:flat"></a-text>
+            </a-box>
+          </a-entity>
+          <a-entity id="view_countdown" visible="false">
+            <a-box position="0 0 -1" width="0.6" height="0.6" depth="0.01" color="white">
+
+              <a-box color="black" position="0 0.3 0.02" width="0.62" height="0.03" depth="0.01" opacity="1"></a-box>
+              <a-box color="black" position="0 -0.3 0.02" width="0.62" height="0.03" depth="0.01" opacity="1"></a-box>
+              <a-box color="black" position="-0.3 0 0.02" width="0.03" height="0.62" depth="0.01" opacity="1"></a-box>
+              <a-box color="black" position="0.3 0 0.02" width="0.03" height="0.62" depth="0.01" opacity="1"></a-box>
+              <a-text id="view_countdown_text" position="-0.01 0 0.2"
+                text="anchor:align;width:7;color:black;value:x;align:center;shader:flat"></a-text>
+            </a-box>
+          </a-entity>
+          <a-entity id="view_human" position="0 0.05 0">
+            <a-box id="hl" position="-0.5 -0.25 0.8" rotation="-20 0 0" width="0.1" height="0.1" depth="2"
+              color="#eda85e" opacity=0.7>
+              <a-cylinder position="0 0 -1" rotation="0 0 90" color="#CCC" height="0.09" radius="0.1"></a-cylinder>
+            </a-box>
+            <a-box id="hr" position="0.5 -0.25 0.8" rotation="-20 0 0" width="0.1" height="0.1" depth="2"
+              color="#eda85e" opacity=0.7>
+              <a-cylinder position="0 0 -1" rotation="0 0 90" color="#CCC" height="0.09" radius="0.1"></a-cylinder>
+            </a-box>
+            <a-entity id="hb" visible="false" position="0 -0.8 -0.3" material="" rotation="65 0 90">
+              <a-box id="hbc" width="0.8" geometry="" height="0.9" depth="0.39" position="0 0 0" rotation="0 0 0"
+                scale="" color="orange" material="" opacity="1">
+                <a-box id="hbt" width="0.03" geometry="" height="0.3" depth="0.4" position="0.4 0 0" rotation="-90 0 0"
+                  scale="" color="black" material="" opacity="1">
+                  <a-text id="hbt1" text="anchor:align;width:3.3;color:white;value:RGB;align:center;shader:flat"
+                    position="0.02 0.06 0" rotation="0 90 0" scale="1 1 1"></a-text>
+                  <a-text id="hbt2" text="anchor:align;width:3.3;color:white;value:123;align:center;shader:flat"
+                    position="0.02 -0.06 0" rotation="0 90 0" scale="1 1 1"></a-text>
+                </a-box>
+                <a-box id="hbcity" width="0.03" geometry="" rotation="-90 0 0" height="0.07" depth="0.9"
+                  position="0.386 0 -0.194" rotation="" scale="" color="white" material="" opacity="1">
+                  <a-text id="hbcityt" text="width: 1.5; color: black; value: xxxx; align: center" position="0.02 0 0"
+                    rotation="0 90 0" scale=""></a-text>
+                </a-box>
+              </a-box>
             </a-entity>
           </a-entity>
         </a-entity>
+      </a-entity>
   </a-scene>
   <!-- <script src="https://aframe.io/aframe-inspector/dist/aframe-inspector.js"></script> -->
 
