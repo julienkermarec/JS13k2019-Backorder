@@ -3,14 +3,15 @@
 
 <head>
   <title>Backorder Storehouse</title>
-  <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
+  <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
   <script src="jsfxr.js"></script>
   <script src="main_bundle.js"></script>
   <meta name="monetization" content="$coil.xrptipbot.com/vS9YW2NhR7Gaek5KTbTfKg">
 </head>
 
 <body>
-  </script>
+  <script src="https://lib.wonderleap.co/releases/latest/wonderleap.js"></script>
+
   <a-scene id="scene">
     <a-assets>
 
@@ -24,7 +25,16 @@
     <!-- CARTONS -->
     <a-entity id="tapis">
       <!-- ALLEMAGNE -->
-
+      <a-entity id="wonderleap" position="-2.4 1.95 -2.9" rotation="0 30 0">
+        <a-entity id="wonderleap_card" wonder-ad="auId: 28f791eb-a864-4da7-ae59-7429af2ba94d">
+        </a-entity>
+        <a-plane position="-0.2 -1 -0.01" width="0.05" height="2" material="opacity: 1;" side="double" color="gray"
+          shadow>
+        </a-plane>
+        <a-plane position="0.2 -1 -0.01" width="0.05" height="2" material="opacity: 1;" side="double" color="gray"
+          shadow>
+        </a-plane>
+      </a-entity>
       <a-entity position="-1.5 0 -2.5" id="germany">
         <a-box width="1.3" height="1.1" dock-listener class="clickable" depth="2" position="0 0.65 -1"
           material="color:white" rotation=""></a-box>
@@ -418,6 +428,7 @@
         </a-entity>
       </a-entity>
   </a-scene>
+
   <!-- <script src="https://aframe.io/aframe-inspector/dist/aframe-inspector.js"></script> -->
 
 </body>
